@@ -1,0 +1,38 @@
+# node_modules/
+node_modules/
+
+# Yarn cache
+.yarn/*
+
+# dist/ folder (output folder after build)
+#dist/
+
+# Build artifacts
+*.min.js
+*.min.js.map
+*.min.css
+*.map
+
+# Compiled binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Runtime cache
+npm-debug.log*
+yarn-error.log
+yarn-integrity
+
+# IDE temporary files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
