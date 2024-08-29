@@ -3,7 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const glob = require('glob');
 
 module.exports = {
-  entry: './src/scripts/background.ts',
+  entry: {
+    background:'./src/scripts/background.ts',
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
