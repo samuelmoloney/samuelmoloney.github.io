@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'src/dist'),
   },
   target: 'web',
   resolve: {
@@ -23,12 +23,4 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    // This will create an HTML file for each .html file in src/
-    ...glob.sync('./src/pages/*.html').map((file) => new HtmlWebpackPlugin({
-      template: file,
-      filename:  path.join('pages', path.basename(file)),
-      inject: true,
-    })),
-  ]
 };
