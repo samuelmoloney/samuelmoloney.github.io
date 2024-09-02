@@ -4,8 +4,9 @@ node_modules/
 # Yarn cache
 .yarn/*
 
-# dist/ folder (output folder after build)
-#dist/
+# pnp
+*.pnp.cjs
+*.pnp.loader.mjs
 
 # Build artifacts
 *.min.js
