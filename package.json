@@ -9,6 +9,7 @@
     "watch": "webpack --watch"
   },
   "devDependencies": {
+    "@types/dat.gui": "^0.7.13",
     "@types/three": "^0.168.0",
     "css-loader": "^7.1.2",
     "glob": "^11.0.0",
@@ -20,6 +21,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "three": "^0.168.0"
   }
 }

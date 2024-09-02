@@ -92,6 +92,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dat.gui@npm:^0.7.13":
+  version: 0.7.13
+  resolution: "@types/dat.gui@npm:0.7.13"
+  checksum: 78cea4c7d583ffccabf896f029844153ad1c9669c2455b80de8c2e4ab15dbf3e1df0a253f82a68244187a3e0d60c7f37514325f5c25a9754b6f792db5f939664
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:^1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -636,6 +643,13 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: f8c4ababffbc5e2ddf2fa9957dda1ee4af6048e22aeda1869d0d00843223c1b13ad3f5d88b51caa46c994225eacb636b764eb807a8883e2fb6f99b4f4e8c48b2
+  languageName: node
+  linkType: hard
+
+"dat.gui@npm:^0.7.9":
+  version: 0.7.9
+  resolution: "dat.gui@npm:0.7.9"
+  checksum: b5b70160657224eacdb8e0a8d76376e6e59adcc654db577531c7bebce854c4f774d1511df6f064e8246a88cf9a3abe489e4d647cf9e53d26a26141a1b5d31e68
   languageName: node
   linkType: hard
 
@@ -1524,8 +1538,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "samuelmoloney.github.io@workspace:."
   dependencies:
+    "@types/dat.gui": ^0.7.13
     "@types/three": ^0.168.0
     css-loader: ^7.1.2
+    dat.gui: ^0.7.9
     glob: ^11.0.0
     html-webpack-plugin: ^5.6.0
     style-loader: ^4.0.0
