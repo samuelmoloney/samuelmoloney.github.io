@@ -1,5 +1,1 @@
-/**
- * @license
- * Copyright 2010-2024 Three.js Authors
- * SPDX-License-Identifier: MIT
- */
+/*! p5.js v1.10.0 July 31, 2024 */

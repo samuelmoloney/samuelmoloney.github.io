@@ -1,10 +1,8 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const glob = require('glob');
 
 module.exports = {
   entry: {
-    background:'./src/scripts/background.ts',
+    background:'./src/scripts/p5-sketch.ts',
   },
   output: {
     filename: 'bundle.js',
@@ -18,9 +16,15 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
         exclude: /node_modules/,
-      }
+        use: {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        },
+      },
+      
     ]
   },
 };
