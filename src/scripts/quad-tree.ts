@@ -7,6 +7,7 @@ import { iSceneObject } from './scene-object';
 export class Quadtree {
     boundary: Rectangle;
     capacity: number;
+    depth: number = 0;
     data: iSceneObject[];
     divided: boolean;
     northeast?: Quadtree;
@@ -15,11 +16,12 @@ export class Quadtree {
     southwest?: Quadtree;
     p5?: p5;
   
-    constructor(boundary: Rectangle, capacity: number,) {
+    constructor(boundary: Rectangle, capacity: number, depth: number = 0) {
       this.boundary = boundary;
       this.capacity = capacity;
       this.data = [];
       this.divided = false;
+      this.depth = depth;
         
     }
   
@@ -36,10 +38,10 @@ export class Quadtree {
       const se = new Rectangle(x + w, y + h, w, h);
       const sw = new Rectangle(x - w, y + h, w, h);
   
-      this.northeast = new Quadtree(ne, this.capacity);
-      this.northwest = new Quadtree(nw, this.capacity);
-      this.southeast = new Quadtree(se, this.capacity);
-      this.southwest = new Quadtree(sw, this.capacity);
+      this.northeast = new Quadtree(ne, this.capacity, this.depth + 1);
+      this.northwest = new Quadtree(nw, this.capacity, this.depth + 1);
+      this.southeast = new Quadtree(se, this.capacity, this.depth + 1);
+      this.southwest = new Quadtree(sw, this.capacity, this.depth + 1);
   
       this.divided = true;
     }
@@ -111,11 +113,32 @@ query<T extends iSceneObject>(
     draw(p5: p5): void {
 
 
+        let normalizedValue = this.depth / 5;
+   
+        
         // Draw the boundary of this quadtree
-        p5.stroke( 0, 255, 0, 225);
+        p5.strokeWeight(2 * normalizedValue);
+        p5.stroke( 255, 255, 255, (255 * normalizedValue) * 0.1);
         p5.noFill();
         p5.rectMode(p5.CENTER);
         p5.rect(this.boundary.x, this.boundary.y, this.boundary.w * 2, this.boundary.h * 2);
+        // draw each boundary point
+      
+        // larger dots the smaller the quadtree
+        // inverse log
+        
+        p5.strokeWeight(3 * normalizedValue);
+        // left top
+        p5.point(this.boundary.x - this.boundary.w, this.boundary.y - this.boundary.h);
+        // right top
+        p5.point(this.boundary.x + this.boundary.w, this.boundary.y - this.boundary.h);
+        // left bottom
+        p5.point(this.boundary.x - this.boundary.w, this.boundary.y + this.boundary.h);
+        // right bottom
+        p5.point(this.boundary.x + this.boundary.w, this.boundary.y + this.boundary.h);
+
+
+
       
         // Recursively draw the subdivisions if the quadtree is divided
         if (this.divided) {

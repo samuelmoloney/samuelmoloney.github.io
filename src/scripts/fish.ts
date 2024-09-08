@@ -3,8 +3,8 @@ import { NumberHelper } from './utils';
 
 export class Fish {
     segments: Segment[];
-    minSize: number = 5;
-    maxSize: number = 20;
+    minSize: number = 2;
+    maxSize: number = 15;
     lastDirection: p5.Vector = new p5.Vector(1, 0);
     smoothingFactor: number = 0.5;
    
@@ -12,13 +12,24 @@ export class Fish {
     constructor(position : p5.Vector, segmentCount: number,) {
       this.segments = [];
   
-     
+   let randomColor = Math.floor(Math.random() * 155);
       // Initialize segments, starting from head
       for (let i = 0; i < segmentCount; i++) {
-        let size = 10 - i;  // Smaller size for the tail
+        let size = segmentCount - i;  // Smaller size for the tail
         // map the size so it buldges out at the middle
         size = NumberHelper.mapSize(i, segmentCount, this.minSize, this.maxSize);
-        let segment = new Segment(position.copy() , size * 0.4 , size);
+        let width = size * 1.5;
+        let height = size * 0.5;
+        let distance = size * 0.5;
+        
+        let color = [randomColor, randomColor, randomColor, 100];
+
+        if (i == 0) {
+          distance = size * 0.5;  // Head is closer to the next segment
+          color[3] = 255;  // Head is opaque
+        }
+        
+        let segment = new Segment(position.copy() , distance , width, height, color);
         this.segments.push(segment);
       } 
       
@@ -46,22 +57,12 @@ export class Fish {
     }
   
     // Display the fish
-    draw(p5: p5) {
+    draw(p5instance: p5) {
 
-        for (let i = 1; i <  this.segments.length; i++) {
-            //console.log("drawing segment " + i + " " +  this.segments[i].position);
-            // Each segment follows the one in front
-            this.segments[i].draw(p5);
+      
+        for (let i = 0; i <  this.segments.length; i++) {
+            this.segments[i].draw(p5instance);
           }
-
-            // draw the head
-        p5.fill(0, 255);
-        // rotate the head to face the direction
-        p5.push();
-        p5.translate(this.segments[0].position.x, this.segments[0].position.y);
-        p5.rotate(this.segments[0].direction.heading());
-        p5.ellipse(0, 0, 20, 20 * 0.5);
-        p5.pop();
   
     }
   }
@@ -69,14 +70,18 @@ class Segment {
     position: p5.Vector;
     direction: p5.Vector;
     desiredDistance: number;
-    size: number;
+    width: number;
+    height: number;
+    color: number[];
+
   
-    constructor(position : p5.Vector, desiredDistance: number, size: number = 10) {
+    constructor(position : p5.Vector, desiredDistance: number, width: number, height: number, color: number[] = [0, 0, 0,255]) {
       this.position = position;
       this.direction = new p5.Vector(1, 0); 
       this.desiredDistance = desiredDistance;
-        this.size = size;
-
+      this.width = width;
+      this.height = height;
+      this.color = color;
     }
   
     // Move this segment to follow the parent segment
@@ -97,27 +102,14 @@ class Segment {
   
     // Display the segment
     draw(p5: p5) {
-        p5.fill(0, 100);
-      
+        p5.fill(this.color);
+
         p5.push();
         p5.translate(this.position.x, this.position.y);
         p5.rotate(this.direction.heading());
-        p5.ellipse(0, 0, this.size, this.size * 0.5);
+        p5.ellipse(0, 0, this.width, this.height);
         p5.pop();
-        // // Scale the direction to define the size of the triangle
-        // let tip = p5.createVector(this.position.x, this.position.y).add(this.direction.copy().mult(this.size));  // Tip of the triangle
-    
-        // // Perpendicular vectors for the left and right base points
-        // let left = p5.createVector(this.position.x, this.position.y).add(
-        //     this.direction.copy().rotate(p5.PI / 2).mult(this.size * 0.5)  // Rotate 90 degrees for left
-        // );
-        
-        // let right = p5.createVector(this.position.x, this.position.y).add(
-        //     this.direction.copy().rotate(-p5.PI / 2).mult(this.size * 0.5)  // Rotate -90 degrees for right
-        // );
-    
-        // Draw the triangle
-        //p5.triangle(tip.x, tip.y, left.x, left.y, right.x, right.y);
+
     }
     
   }

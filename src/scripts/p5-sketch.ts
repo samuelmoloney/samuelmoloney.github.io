@@ -4,8 +4,8 @@ import { Flock } from './flock';
 const sketch = (p: p5) => {
 
     function onWindowResize(){
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const width = window.innerWidth * 0.99;
+        const height = window.innerHeight * 0.99;
         p.resizeCanvas(width, height);
     }
 
@@ -13,21 +13,10 @@ const sketch = (p: p5) => {
 
     p.setup = () => {
     // get the full width and height of the window
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth * 0.99;
+    const height = window.innerHeight * 0.99;
     // hook for window resizing
     window.addEventListener("resize", onWindowResize);
-    // hook for touch events
-    // window.addEventListener("touchstart", (e) => {
-    //     p.mouseX = e.touches[0].clientX;
-    //     p.mouseY = e.touches[0].clientY;
-    //     console.log(p.mouseX, p.mouseY);
-    // });
-    // window.addEventListener("mousedown", (event: MouseEvent) => {
-    //     p.mouseX = event.clientX;
-    //     p.mouseY = event.clientY;
-    //     console.log(p.mouseX, p.mouseY);
-    // });
 
     p.createCanvas(width, height);
     flock = new Flock(p);
@@ -44,7 +33,7 @@ const sketch = (p: p5) => {
     p.fill(175);
     p.noStroke();
     flock.draw();
-    p.ellipse(p.mouseX, p.mouseY, 50, 50);
+
     };
 };
 

@@ -11,13 +11,18 @@ export class Boid implements iSceneObject {
     fov : number = 25;
     sightRadius : number = 60;
     avoidanceRadius : number = 20;
-    maxForce : number = 0.5;
-    maxSpeed : number = 0.1;
+
+    minSpeed : number = 0.1;
+    maxSpeed : number = 0.3;
     desiredSeparation : number = 50;
     desiredAlignment : number = 25;
     desiredCohesion : number = 25;
-    // fish model
-    fish : Fish ;
+
+    private currentSpeed : number ;
+    private timer : number = 0;
+    private interval : number = 0;
+    private fish : Fish ;
+
     constructor( position : p5.Vector, p5: p5) {
         // assigning the p5 instance to the p5 property for reference
         this.p5 = p5;
@@ -29,12 +34,14 @@ export class Boid implements iSceneObject {
         this.velocity = p5.createVector(p5.random(-1, 1), p5.random(-1, 1));
         this.velocity.setMag(p5.random(0.5,this.maxSpeed));
         this.acceleration = p5.createVector(0, 0);
+        // set the current speed randomly
+        this.currentSpeed =     p5.random(this.minSpeed, this.maxSpeed);
         // create a fish model
-        this.fish = new Fish(this.position, 8);
+        this.fish = new Fish(this.position, 10);
     
     }
   
-
+    
     getSteeringDirection() : p5.Vector { 
 
         return this.velocity.copy().normalize();
@@ -54,9 +61,18 @@ export class Boid implements iSceneObject {
     return angleBetween < this.fov / 2; // Check if within the FOV
   }
 
+    scare( steering: p5.Vector , intervalMin : number, intervalMax : number) {
+        if(steering.mag() == 0)
+        {
+            return;
+        }
+        this.acceleration.add(steering);
+        this.currentSpeed = this.maxSpeed * 2.0;
+        this.interval =  this.p5.random(intervalMin, intervalMax);
+    }
+
     addForce(force: p5.Vector) {
         this.acceleration.add(force);
-        //this.acceleration.limit(this.maxSpeed);
     }
 
   
@@ -72,24 +88,36 @@ export class Boid implements iSceneObject {
         this.position.add(this.velocity.mult(dt));
         this.velocity.add(this.acceleration);
         // limit the velocity
-        this.velocity.limit(this.maxSpeed);
+        this.velocity.limit( this.currentSpeed);
         this.worldWrap();
         this.acceleration = this.p5.createVector(0, 0);
 
         // update the fish model
         this.fish.update(this.position, this.getSteeringDirection());
+
+        // update the timer
+        this.timer += dt;
+        if (this.timer > this.interval) {
+            this.timer = 0;
+            this.interval = this.p5.random(1000, 5000);
+            this.currentSpeed = this.p5.random(this.minSpeed, this.maxSpeed);
+        }
+
     }
 
     private  worldWrap() {
-        if (this.position.x > this.p5.width) {
-            this.position.x = 0;
-        } else if (this.position.x < 0) {
-            this.position.x = this.p5.width;
+
+        let padding = 100;
+
+        if (this.position.x > this.p5.width + padding) {
+            this.position.x = -padding;
+        } else if (this.position.x < -padding) {
+            this.position.x = this.p5.width + padding;
         }
-        if (this.position.y > this.p5.height) {
-            this.position.y = 0;
-        } else if (this.position.y < 0) {
-            this.position.y = this.p5.height;
+        if (this.position.y > this.p5.height + padding) {
+            this.position.y = -padding;
+        } else if (this.position.y < -padding) {
+            this.position.y = this.p5.height + padding;
         }
     }
 
