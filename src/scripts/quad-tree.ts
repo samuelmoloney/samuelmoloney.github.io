@@ -1,13 +1,13 @@
-import { Boid } from "./boid";
+
 import { Rectangle } from "./rectangle";
 import { Circle } from "./circle";
-
 import p5 from "p5";
+import { iSceneObject } from './scene-object';
 
 export class Quadtree {
     boundary: Rectangle;
     capacity: number;
-    boids: Boid[];
+    data: iSceneObject[];
     divided: boolean;
     northeast?: Quadtree;
     northwest?: Quadtree;
@@ -18,7 +18,7 @@ export class Quadtree {
     constructor(boundary: Rectangle, capacity: number,) {
       this.boundary = boundary;
       this.capacity = capacity;
-      this.boids = [];
+      this.data = [];
       this.divided = false;
         
     }
@@ -45,15 +45,15 @@ export class Quadtree {
     }
   
     // Insert a boid into the quadtree
-    insert(boid: Boid): boolean {
+    insert(sceneObject: iSceneObject): boolean {
       // Ensure boid is within boundary
-      if (!this.boundary.contains(boid)) {
+      if (!this.boundary.contains(sceneObject.position.x, sceneObject.position.y)) {
         return false;
       }
   
       // If capacity is not reached, add boid here
-      if (this.boids.length < this.capacity) {
-        this.boids.push(boid);
+      if (this.data.length < this.capacity) {
+        this.data.push(sceneObject);
         return true;
       } else {
         // Subdivide if not already subdivided
@@ -62,13 +62,13 @@ export class Quadtree {
         }
   
         // Insert into appropriate quadrant
-        if (this.northeast?.insert(boid)) {
+        if (this.northeast?.insert(sceneObject)) {
           return true;
-        } else if (this.northwest?.insert(boid)) {
+        } else if (this.northwest?.insert(sceneObject)) {
           return true;
-        } else if (this.southeast?.insert(boid)) {
+        } else if (this.southeast?.insert(sceneObject)) {
           return true;
-        } else if (this.southwest?.insert(boid)) {
+        } else if (this.southwest?.insert(sceneObject)) {
           return true;
         }
       }
@@ -76,33 +76,43 @@ export class Quadtree {
       return false; // If no quadrant accepted the boid
     }
   
-    // Query boids in a circular range
-    query(range: Circle, found: Boid[] = []): Boid[] {
-      if (!this.boundary.intersects(range)) {
-        return found;
+// Query any type of objects within a circular range
+query<T extends iSceneObject>(
+  range: Circle, 
+  typeConstructor: new (...args: any[]) => T, // Constructor function for the type T
+  found: T[] = []
+): T[] {
+  // Check if the range intersects with the boundary
+  if (!this.boundary.intersects(range)) {
+    return found;
+  }
+
+  // Check all items in this quadtree node
+  for (let item of this.data) {
+    // Check if the item is of type T using the constructor
+    if (item instanceof typeConstructor) {
+      if (range.contains(item.position)) {
+        found.push(item as T);
       }
-  
-      for (let boid of this.boids) {
-        if (range.contains(boid)) {
-          found.push(boid);
-        }
-      }
-  
-      if (this.divided) {
-        this.northwest?.query(range, found);
-        this.northeast?.query(range, found);
-        this.southwest?.query(range, found);
-        this.southeast?.query(range, found);
-      }
-  
-      return found;
     }
+  }
+
+  // Recurse into children if divided
+  if (this.divided) {
+    this.northwest?.query(range, typeConstructor, found);
+    this.northeast?.query(range, typeConstructor, found);
+    this.southwest?.query(range, typeConstructor, found);
+    this.southeast?.query(range, typeConstructor, found);
+  }
+
+  return found;
+}
     
     draw(p5: p5): void {
-        // the smaller the boundary the brighter the color
-        let brightness = p5.map(0, this.boundary.w, 50, 255, 0);
+
+
         // Draw the boundary of this quadtree
-        p5.stroke( 0, 255, 0, 25);
+        p5.stroke( 0, 255, 0, 225);
         p5.noFill();
         p5.rectMode(p5.CENTER);
         p5.rect(this.boundary.x, this.boundary.y, this.boundary.w * 2, this.boundary.h * 2);

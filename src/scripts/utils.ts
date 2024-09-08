@@ -25,6 +25,15 @@ export class NumberHelper
     }
 }
 
+export class TypeHelper
+{
+    public static isType<T>(value: any): value is T {
+        return typeof value === 'object' && value !== null;
+      }
+
+    
+}
+
 export class VectorHelper
 {
     static random2DPos(width: number, height: number): p5.Vector {

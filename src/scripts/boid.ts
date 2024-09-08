@@ -1,24 +1,39 @@
 
 import p5 from 'p5';
 import { Fish } from './fish';
+import { iSceneObject } from './scene-object';
 
-export class Boid {
+export class Boid implements iSceneObject {
     p5 : p5;
-    position : p5.Vector;
+    position: p5.Vector;
     velocity : p5.Vector;
     acceleration : p5.Vector;
     fov : number = 25;
-    sightRadius : number = 50;
-    maxForce : number = 0.03;
-    maxSpeed : number = 0.08;
-    desiredSeparation : number = 30;
+    sightRadius : number = 60;
+    avoidanceRadius : number = 20;
+    maxForce : number = 0.5;
+    maxSpeed : number = 0.1;
+    desiredSeparation : number = 50;
     desiredAlignment : number = 25;
     desiredCohesion : number = 25;
-
     // fish model
     fish : Fish ;
-    
+    constructor( position : p5.Vector, p5: p5) {
+        // assigning the p5 instance to the p5 property for reference
+        this.p5 = p5;
 
+        // setting the position information
+        this.position = position;
+        this.velocity = p5.createVector(0, 0);
+        // randomize the velocity for now
+        this.velocity = p5.createVector(p5.random(-1, 1), p5.random(-1, 1));
+        this.velocity.setMag(p5.random(0.5,this.maxSpeed));
+        this.acceleration = p5.createVector(0, 0);
+        // create a fish model
+        this.fish = new Fish(this.position, 8);
+    
+    }
+  
 
     getSteeringDirection() : p5.Vector { 
 
@@ -41,23 +56,13 @@ export class Boid {
 
     addForce(force: p5.Vector) {
         this.acceleration.add(force);
-        this.acceleration.limit(this.maxForce);
+        //this.acceleration.limit(this.maxSpeed);
     }
 
-    constructor( position : p5.Vector, p5: p5) {
-        // assigning the p5 instance to the p5 property for reference
-        this.p5 = p5;
-
-        // setting the position information
-        this.position = position;
-        this.velocity = p5.createVector(0, 0);
-        // randomize the velocity for now
-        this.velocity = p5.createVector(p5.random(-1, 1), p5.random(-1, 1));
-        this.velocity.setMag(p5.random(0.5,this.maxSpeed));
-        this.acceleration = p5.createVector(0, 0);
-        // create a fish model
-        this.fish = new Fish(this.position, 8);
-    
+  
+   
+    setup(): void {
+        throw new Error('Method not implemented.');
     }
 
 
@@ -65,7 +70,8 @@ export class Boid {
     {
         let dt = this.p5.deltaTime;
         this.position.add(this.velocity.mult(dt));
-        this.velocity.add(this.acceleration.mult(dt));
+        this.velocity.add(this.acceleration);
+        // limit the velocity
         this.velocity.limit(this.maxSpeed);
         this.worldWrap();
         this.acceleration = this.p5.createVector(0, 0);
@@ -87,9 +93,9 @@ export class Boid {
         }
     }
 
-    draw() {
+    draw( p5instance : p5): void {
         // draw the fish model
-        this.fish.draw(this.p5);
+        this.fish.draw(p5instance);
         // this.p5.fill(0);
         // this.p5.ellipse(this.position.x, this.position.y, 5, 5);
     }

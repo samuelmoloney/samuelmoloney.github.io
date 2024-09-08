@@ -22,7 +22,6 @@ export class Fish {
         this.segments.push(segment);
       } 
       
-      console.log(segmentCount + " " + this.segments.length);
     }
   
     // Update all segments
@@ -60,10 +59,6 @@ export class Fish {
         // rotate the head to face the direction
         p5.push();
         p5.translate(this.segments[0].position.x, this.segments[0].position.y);
-        let angle = this.segments[0].direction.heading();
-        // smooth the heads rotation
-
-        
         p5.rotate(this.segments[0].direction.heading());
         p5.ellipse(0, 0, 20, 20 * 0.5);
         p5.pop();
@@ -88,8 +83,7 @@ class Segment {
     follow(parent: Segment) {
       let target = parent.position.copy();  // Copy parent's position
       let distance = p5.Vector.dist(this.position, target);  // Calculate the distance to the parent
-      console.log("position " + this.position + "target " + target + "distance " + distance);
-   //   console.log("target" + target + "distance" + distance);
+
   
       if (distance > this.desiredDistance) {
         let dir = p5.Vector.sub(target, this.position);  // Get the direction to the parent

@@ -14,12 +14,12 @@ export class Rectangle {
         this.h = h;
     }
 
-    contains(boid: Boid): boolean {
+    contains(x :number, y :number ): boolean {
         return (
-            boid.position.x >= this.x - this.w &&
-            boid.position.x < this.x + this.w &&
-            boid.position.y >= this.y - this.h &&
-            boid.position.y < this.y + this.h
+            x >= this.x - this.w &&
+           x < this.x + this.w &&
+            y >= this.y - this.h &&
+            y < this.y + this.h
         );
     }
 

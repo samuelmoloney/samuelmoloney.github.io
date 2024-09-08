@@ -1,6 +1,7 @@
 import { Boid } from "./boid";
 import { Rectangle } from "./rectangle";
 import { NumberHelper } from "./utils";
+import p5 from "p5";
 
 export class Circle {
     x: number;
@@ -13,13 +14,13 @@ export class Circle {
         this.r = r;
     }
 
-    contains(boid: Boid): boolean {
+    contains(position: p5.Vector): boolean {
 
-        const d = NumberHelper.dist(boid.position.x, boid.position.y, this.x, this.y);
+        const d = NumberHelper.dist(position.x, position.y, this.x, this.y);
         return d <= this.r;
     }
 
-    intersects(range: Rectangle): boolean {
+    intersectsRectangle(range: Rectangle): boolean {
         const xDist = Math.abs(range.x - this.x);
         const yDist = Math.abs(range.y - this.y);
         
@@ -33,5 +34,15 @@ export class Circle {
         if (xDist <= w || yDist <= h) return true;
         
         return edges <= Math.pow(r, 2);
+    }
+
+    intersectsCircle(other: Circle): boolean {
+        const d = NumberHelper.dist(this.x, this.y, other.x, other.y);
+        return d <= this.r + other.r;
+    }
+
+    draw(p5: p5) {
+        p5.fill(255, 0, 0, 100);
+        p5.ellipse(this.x, this.y, this.r * 2, this.r * 2);
     }
 }

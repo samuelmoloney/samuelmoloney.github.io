@@ -2,17 +2,20 @@ import p5 from "p5";
 import { Boid } from "./boid";
 import {Quadtree} from "./quad-tree";
 import { Rectangle } from "./rectangle";
-import { Circle } from "./circle";
+import { Obsticle } from "./obsticle";
 import { VectorHelper } from "./utils";
+import { Circle } from "./circle";
+
 
 export class Flock {
     private boids: Boid[] = [];
-    private boidsCount: number = 100;
-    private p5: p5;
+    private obstacles: Obsticle[] = [];
+    private boidsCount: number = 500;
+    private p5instance: p5;
     private quadtree: Quadtree = new Quadtree(new Rectangle(0, 0, 0, 0), 0);
 
     constructor(p5instance: p5) {
-        this.p5 = p5instance;
+        this.p5instance = p5instance;
         this.setup();
 
     }
@@ -20,57 +23,115 @@ export class Flock {
     setup() {    
        
         for (let i = 0; i < this.boidsCount; i++) {
-            let boid = new Boid(VectorHelper.random2DPos(this.p5.width, this.p5.height), this.p5);
+            let boid = new Boid(VectorHelper.random2DPos(this.p5instance.width, this.p5instance.height), this.p5instance);
             this.boids.push(boid);
+        }
+        this.p5instance.mouseClicked = () => {
+            this.addAvoidanceObstacle(this.p5instance.mouseX, this.p5instance.mouseY, 200);
         }
         this.refreshQuadtree();
     }
 
     refreshQuadtree() {
-        let boundary = new Rectangle(0, 0, this.p5.width, this.p5.height);
+        let boundary = new Rectangle(0, 0, this.p5instance.width, this.p5instance.height);
         this.quadtree = new Quadtree(boundary, 1);
         for (let boid of this.boids) {
             this.quadtree.insert(boid);
         }
+        for (let obstacle of this.obstacles) {
+            this.quadtree.insert(obstacle);
+        }
+    }
+
+    addAvoidanceObstacle(x: number, y: number, radius: number) {
+        let obstacle = new Obsticle(x, y, radius);
+        this.obstacles.push(obstacle);
+   
     }
 
     update() {
         this.refreshQuadtree();
+
+
         for (let boid of this.boids) {
             let range = new Circle(boid.position.x, boid.position.y, boid.sightRadius);
-            let neighbors = this.quadtree.query(range);
-            if(neighbors !== undefined){
+            let boidNeighbors = this.quadtree.query<Boid>(range,Boid);
+            let obstacles = this.quadtree.query<Obsticle>(range,Obsticle);
 
+            if(boidNeighbors !== undefined)
+            {
             // remove any boids outside of the cone of vision
-            neighbors = neighbors.filter(n => boid.isInCone(n));
+            boidNeighbors = boidNeighbors.filter(n => boid.isInCone(n));
                 
-            let alignment = this.alignment(boid, neighbors);
-            let cohesion = this.cohesion(boid, neighbors);
-            let separation = this.separation(boid, neighbors);  
+            let alignment = this.alignment(boid, boidNeighbors);
+            let cohesion = this.cohesion(boid, boidNeighbors);
+            let separation = this.separation(boid, boidNeighbors);  
+  
             boid.addForce(alignment);
             boid.addForce(cohesion);
             boid.addForce(separation);
             }
-            else
-            {
-            console.log("undefined");
+
+            if (obstacles !== undefined) {
+                let avoidObstacle = this.avoidObstacle(boid, obstacles);
+                boid.addForce(avoidObstacle);
             }
+            
+      
             boid.update();
+        }
+
+        for (let obstacle of this.obstacles) {
+            obstacle.update(this.p5instance.deltaTime);
         }
     }
 
     draw() {
         for (let boid of this.boids) {
-            boid.draw();
+            boid.draw(this.p5instance);
         }
+        for (let obstacle of this.obstacles) {
+            obstacle.draw(this.p5instance);
+        }
+       //this.quadtree.draw(this.p5instance);
+    }
 
-       //this.quadtree.draw(this.p5);
+    private avoidObstacle(boid: Boid, obstacles: Obsticle[]): p5.Vector {
+
+        let steer = this.p5instance.createVector();
+        for (let obstacle of obstacles) { 
+                    
+            let obsticleCircle  = new Circle(obstacle.position.x, obstacle.position.y, obstacle.radius * 2.0);
+            let boidCircle = new Circle(boid.position.x, boid.position.y, boid.sightRadius);
+
+            if (obsticleCircle.intersectsCircle(boidCircle)) {
+
+                // Calculate the distance between the boid and the obstacle
+                let distance = p5.Vector.dist(boid.position, obstacle.position) - obstacle.radius;
+            
+                // Calculate the direction vector away from the obstacle
+                let desired = p5.Vector.sub(boid.position, obstacle.position);
+                desired.normalize();
+            
+                // Scale the force based on the distance (stronger when closer)
+                let scale = this.p5instance.map(distance, 0, boid.sightRadius, 1, 0);  // Scale based on actual distance
+            
+                // Steering force calculation
+                 steer = p5.Vector.sub(desired, boid.velocity);
+                steer.normalize();
+                steer.mult(scale);  // Scale the force by proximity to the obstacle
+            
+                // Optional: limit the steering force to avoid excessive steering
+                steer.limit(boid.maxForce);
+              }
+        }
+        return steer;
     }
 
     private alignment(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5.createVector();
+        if (neighbors.length === 0) return this.p5instance.createVector();
     
-        let sum = this.p5.createVector();
+        let sum = this.p5instance.createVector();
         for (let n of neighbors) {
             sum.add(n.velocity);  // Sum the velocities of all neighbors
         }
@@ -84,9 +145,9 @@ export class Flock {
     }
 
     private cohesion(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5.createVector();
+        if (neighbors.length === 0) return this.p5instance.createVector();
     
-        let sum = this.p5.createVector();
+        let sum = this.p5instance.createVector();
         for (let n of neighbors) {
             sum.add(n.position);  // Sum the positions of all neighbors
         }
@@ -101,17 +162,17 @@ export class Flock {
     }
 
     private separation(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5.createVector();
+        if (neighbors.length === 0) return this.p5instance.createVector();
     
-        let sum = this.p5.createVector();
+        let sum = this.p5instance.createVector();
         let count = 0;
     
         for (let n of neighbors) {
-            let d = this.p5.dist(boid.position.x, boid.position.y, n.position.x, n.position.y);
+            let d = this.p5instance.dist(boid.position.x, boid.position.y, n.position.x, n.position.y);
             
             // Only consider neighbors that are very close
             if (d > 0 && d < boid.desiredSeparation) {
-                let diff = this.p5.createVector(boid.position.x - n.position.x, boid.position.y - n.position.y);
+                let diff = this.p5instance.createVector(boid.position.x - n.position.x, boid.position.y - n.position.y);
                 diff.normalize();  // Normalize to get direction
                 diff.div(d);  // Weight the force by distance (closer boids have stronger effect)
                 sum.add(diff);
