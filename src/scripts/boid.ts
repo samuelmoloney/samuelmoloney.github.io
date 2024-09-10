@@ -93,7 +93,7 @@ export class Boid implements iSceneObject {
         this.acceleration = this.p5.createVector(0, 0);
 
         // update the fish model
-        this.fish.update(this.position, this.getSteeringDirection());
+        this.fish.update(this.position, this.velocity, this.p5);
 
         // update the timer
         this.timer += dt;
