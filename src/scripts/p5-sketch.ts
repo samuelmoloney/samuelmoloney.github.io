@@ -32,7 +32,40 @@ const sketch = (p: p5) => {
     p.background(220);
     p.fill(175);
     p.noStroke();
+
+    // TODO: wrap this into a class
+    let screenCenter = p.createVector(p.width / 2, p.height / 2);
+    let baseScreenSize = p.createVector(p.width, p.height);
+    let mouseUV = p.createVector(p.mouseX / p.width, p.mouseY / p.height);
+    
+    let layerCount = 10;
+    let parralaxStrength = 200;
+    let innerSize = 0.033;
+    
+    for (let i = 0; i < layerCount; i++) {  
+       
+        const layerDepth = i * innerSize; // Increase depth for each layer
+        p.push();
+         p.fill(100, 100, 100, 15 * i / layerCount);
+        // Calculate screen size and position for each layer
+        let screenSize = baseScreenSize.copy().mult(1 - layerDepth);  // Shrink screen size
+        let parallaxOffset = mouseUV.copy().sub(0.5).mult(layerDepth * parralaxStrength);  // Mouse effect for parallax
+        
+        // Calculate the position offset
+        let position = screenCenter.copy().add(parallaxOffset);
+    
+        // Translate to the position and draw the rectangle
+        p.translate(position.x, position.y);
+        p.rectMode(p.CENTER); // Center the rectangle
+        p.rect(0, 0, screenSize.x, screenSize.y, 200);
+        
+        p.pop();
+    }
+
+
     flock.draw();
+
+  
 
     };
 };
