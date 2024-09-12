@@ -11,35 +11,36 @@ export class Flock {
     private boids: Boid[] = [];
     private obstacles: Obstacle[] = [];
     private boidsCount: number;
-    private clickObstacle: Obstacle = new Obstacle(0, 0, 0); 
-    private p5instance: p5;
+    private clickObstacle: Obstacle;
+    private p5i: p5;
     private quadtree: Quadtree = new Quadtree(new Rectangle(0, 0, 0, 0), 0);
 
-    constructor(p5instance: p5) {
-        this.p5instance = p5instance;
-        this.boidsCount = this.calculateBoidCountFromScreenSize();
+    constructor(p5i: p5) {
+        this.p5i = p5i;
+        this.boidsCount = this.calculateBoidCountFromScreenSize();  
+        this.clickObstacle = new Obstacle(0, 0, 0, this.p5i);
         this.setup();
 
     }
 
     setup() {    
-
+      
         this.addAvoidanceObstacle(this.clickObstacle);
         for (let i = 0; i < this.boidsCount; i++) {
-            let boid = new Boid(VectorHelper.random2DPos(this.p5instance.width, this.p5instance.height), this.p5instance);
+            let boid = new Boid(VectorHelper.random2DPos(this.p5i.width, this.p5i.height), this.p5i);
             this.boids.push(boid);
         }
-        this.p5instance.mouseDragged = () => {
-            this.clickObstacle.position = this.p5instance.createVector(this.p5instance.mouseX, this.p5instance.mouseY);
+        this.p5i.mouseDragged = () => {
+            this.clickObstacle.position = this.p5i.createVector(this.p5i.mouseX, this.p5i.mouseY);
             this.clickObstacle.radius = 400;
         }
-        this.p5instance.mousePressed = () => {
-            this.clickObstacle.position = this.p5instance.createVector(this.p5instance.mouseX, this.p5instance.mouseY);
+        this.p5i.mousePressed = () => {
+            this.clickObstacle.position = this.p5i.createVector(this.p5i.mouseX, this.p5i.mouseY);
             this.clickObstacle.radius = 400;
         }
         // on mouse release, remove the obstacle
-        this.p5instance.mouseReleased = () => {
-            this.clickObstacle.position = this.p5instance.createVector(0, 0);
+        this.p5i.mouseReleased = () => {
+            this.clickObstacle.position = this.p5i.createVector(0, 0);
             this.clickObstacle.radius = 0;
         }
 
@@ -47,7 +48,7 @@ export class Flock {
     }
 
     refreshQuadtree() {
-        let boundary = new Rectangle(0, 0, this.p5instance.width, this.p5instance.height);
+        let boundary = new Rectangle(0, 0, this.p5i.width, this.p5i.height);
         this.quadtree = new Quadtree(boundary, 1);
         for (let boid of this.boids) {
             this.quadtree.insert(boid);
@@ -95,28 +96,28 @@ export class Flock {
         }
 
         for (let obstacle of this.obstacles) {
-            obstacle.update(this.p5instance.deltaTime);
+            obstacle.update();
         }
     }
 
     draw() {
         for (let boid of this.boids) {
-            boid.draw(this.p5instance);
+            boid.draw();
         }
         for (let obstacle of this.obstacles) {
-            obstacle.draw(this.p5instance);
+            obstacle.draw();
         }
-       this.quadtree.draw(this.p5instance);
+       this.quadtree.draw(this.p5i);
     }
 
     private calculateBoidCountFromScreenSize(): number {
-        let minDimension = Math.min(this.p5instance.width, this.p5instance.height);
+        let minDimension = Math.min(this.p5i.width, this.p5i.height);
         return Math.floor(minDimension / 10);
     }
 
     private avoidObstacle(boid: Boid, obstacles: Obstacle[]): p5.Vector {
 
-        let steer = this.p5instance.createVector();
+        let steer = this.p5i.createVector();
         for (let obstacle of obstacles) { 
                     
             let obsticleCircle  = new Circle(obstacle.position.x, obstacle.position.y, obstacle.radius * 2.0);
@@ -133,7 +134,7 @@ export class Flock {
                 desired.normalize();
             
                 // Scale the force based on the distance (stronger when closer)
-                let scale = this.p5instance.map(distance, 0, boid.sightRadius, 1, 0);  // Scale based on actual distance
+                let scale = this.p5i.map(distance, 0, boid.sightRadius, 1, 0);  // Scale based on actual distance
             
                 // Steering force calculation
                  steer = p5.Vector.sub(desired, boid.velocity);
@@ -146,9 +147,9 @@ export class Flock {
     }
 
     private alignment(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5instance.createVector();
+        if (neighbors.length === 0) return this.p5i.createVector();
     
-        let sum = this.p5instance.createVector();
+        let sum = this.p5i.createVector();
         for (let n of neighbors) {
             sum.add(n.velocity);  // Sum the velocities of all neighbors
         }
@@ -162,9 +163,9 @@ export class Flock {
     }
 
     private cohesion(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5instance.createVector();
+        if (neighbors.length === 0) return this.p5i.createVector();
     
-        let sum = this.p5instance.createVector();
+        let sum = this.p5i.createVector();
         for (let n of neighbors) {
             sum.add(n.position);  // Sum the positions of all neighbors
         }
@@ -179,17 +180,17 @@ export class Flock {
     }
 
     private separation(boid: Boid, neighbors: Boid[]): p5.Vector {
-        if (neighbors.length === 0) return this.p5instance.createVector();
+        if (neighbors.length === 0) return this.p5i.createVector();
     
-        let sum = this.p5instance.createVector();
+        let sum = this.p5i.createVector();
         let count = 0;
     
         for (let n of neighbors) {
-            let d = this.p5instance.dist(boid.position.x, boid.position.y, n.position.x, n.position.y);
+            let d = this.p5i.dist(boid.position.x, boid.position.y, n.position.x, n.position.y);
             
             // Only consider neighbors that are very close
             if (d > 0 && d < boid.desiredSeparation) {
-                let diff = this.p5instance.createVector(boid.position.x - n.position.x, boid.position.y - n.position.y);
+                let diff = this.p5i.createVector(boid.position.x - n.position.x, boid.position.y - n.position.y);
                 diff.normalize();  // Normalize to get direction
                 diff.div(d);  // Weight the force by distance (closer boids have stronger effect)
                 sum.add(diff);

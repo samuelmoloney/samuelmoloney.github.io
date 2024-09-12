@@ -2,8 +2,9 @@ import p5 from 'p5';
 
 export interface iSceneObject {
     position: p5.Vector;
+    /// p5 instance object for reference
+    p5i : p5;
     
-    setup(): void;
-    update(dt: number): void;
-    draw(p5instance : p5): void;
+    update(...args: any[]): void;
+    draw(...args: any[]): void;
   }

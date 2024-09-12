@@ -1,17 +1,22 @@
 import p5 from 'p5';
 import { NumberHelper } from './utils';
+import { iSceneObject } from './scene-object';
 
-export class Fish {
+export class Fish  implements iSceneObject {
     segments: Segment[];
     minSize: number = 2;
     maxSize: number = 15;
+    position: p5.Vector = new p5.Vector(0, 0);
     lastDirection: p5.Vector = new p5.Vector(1, 0);
     smoothingFactor: number = 0.5;
+    p5i: p5;
 
    
 
-    constructor(position : p5.Vector, segmentCount: number,) {
+    constructor(position : p5.Vector, segmentCount: number, p5i: p5) {
       this.segments = [];
+      this.p5i = p5i;
+      this.position = position;
   
    let randomColor = Math.floor(Math.random() * 155);
       // Initialize segments, starting from head
@@ -30,7 +35,7 @@ export class Fish {
           color[3] = 255;  // Head is opaque
         }
         
-        let segment = new Segment(position.copy() , distance , width, height, color);
+        let segment = new Segment(this.position.copy() , distance , width, height, color);
         this.segments.push(segment);
       } 
       
@@ -38,9 +43,9 @@ export class Fish {
     }
   
     // Update all segments
-    update(position : p5.Vector, velocity : p5.Vector, p5instance: p5) {
+    update(position : p5.Vector, velocity : p5.Vector) {
 
-  
+      this.position = position;
         let direction = velocity.copy().normalize();  // Get the direction of the velocity
        // Smooth the direction change
        let smoothedDirection = p5.Vector.lerp(this.lastDirection, direction, this.smoothingFactor);
@@ -49,7 +54,7 @@ export class Fish {
 
         this.segments[0].direction = smoothedDirection;  // Update the head's direction
         // Move the head to the new position
-        this.segments[0].position = position;
+        this.segments[0].position = this.position;
 
       for (let i = 1; i <  this.segments.length; i++) {
         // Each segment follows the one in front
@@ -58,7 +63,7 @@ export class Fish {
         // animate only the tail
         if( i > this.segments.length * 0.5)
         {
-        this.segments[i].animateTailMovement( velocity, p5instance);
+        this.segments[i].animateTailMovement( velocity, this.p5i);
         }
    
       }
@@ -66,11 +71,11 @@ export class Fish {
     }
   
     // Display the fish
-    draw(p5instance: p5) {
+    draw() {
 
       
         for (let i = 0; i <  this.segments.length; i++) {
-            this.segments[i].draw(p5instance);
+            this.segments[i].draw(this.p5i);
           }
   
     }
