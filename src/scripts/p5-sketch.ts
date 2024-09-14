@@ -13,14 +13,13 @@ const sketch = (p: p5) => {
 
     p.setup = () => {
     // get the full width and height of the window
-    const width = window.innerWidth * 0.99;
-    const height = window.innerHeight * 0.99;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    let canvas = p.createCanvas(width, height).parent('backgroundCanvas');
+    flock = new Flock(p);
     // hook for window resizing
     window.addEventListener("resize", onWindowResize);
-
-    p.createCanvas(width, height);
-    flock = new Flock(p);
-
     };
 
 

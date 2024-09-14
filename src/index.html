@@ -5,63 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Under Construction</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100vh;
+        /* Ensure body and html take the full height */
+        html, body {
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent unwanted scroll bars */
         }
-        .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background-color: white;
-        }
-        h1 {
-            font-size: 48px;
-            color: #333;
-        }
-        p {
-            font-size: 24px;
-            color: #666;
-        }
-        footer {
+
+        /* Ensure the canvas covers the entire screen and is always fixed in place */
+        #backgroundCanvas {
             position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #f0f0f0;
-            text-align: center;
-            padding: 10px;
-            color: #333;
+            width: 100vw;
+            height: 100vh;
+            z-index: 3;
         }
-        #backgroundCanvas
-        {
-        z-index: -1;
-        position: fixed;
-        background-color: #f0f0f0;
+
+        /* React root */
+        #root {
+            position: relative;
+            z-index: -10; /* Ensure React content is above the canvas */
         }
+
+        /* Container for React app content that scrolls */
+        .content-container {
+        position: relative;
+        z-index: -10;
+        height: 100vh;
+        overflow-y: auto;
+    }
     </style>
 </head>
 <body>
-    <!-- Include the contents of your underconstruction.html page -->
-    <div class="container">
-        <h1>Under Construction</h1>
-        <p>We're working on something new. Check back soon!</p>
+    <!-- Canvas for background sketch -->
+    <canvas id="backgroundCanvas"></canvas>
+
+    <!-- Root div for React app content -->
+    <div class="content-container">
+        <div id="root"></div>
     </div>
 
-    <!-- Canvas for interactive background -->
-    <canvas id="backgroundCanvas"></canvas>
-    <!-- <footer>
-        <a href="pages/about-me.html">About Me</a>
-    </footer> -->
-    <script src="dist/bundle.js"></script>
+    <!-- Scripts for the React app and p5 sketch -->
+    <script src="/src/dist/vendors.bundle.js"></script>
+    <script type="module" src="/src/dist/app.bundle.js"></script>
+    <script type="module" src="/src/dist/background.bundle.js"></script>
 </body>
 </html>
