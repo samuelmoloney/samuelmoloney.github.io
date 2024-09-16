@@ -7,14 +7,12 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#1b5e20',
+      main: '#181C14',
     },
     secondary: {
       main: '#ec407a',
     },
-    background: {
-      default: 'transparent',
-    },
+
   },
   typography: {
     fontFamily: ['Nunito Sans', 'sans-serif'].join(','),

@@ -20,27 +20,27 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 3;
+            z-index: -1; /* Make sure the canvas stays in the background */
         }
 
         /* React root */
         #root {
             position: relative;
-            z-index: -10; /* Ensure React content is above the canvas */
+            z-index: 1; /* Make React content appear above the canvas */
         }
 
         /* Container for React app content that scrolls */
         .content-container {
-        position: relative;
-        z-index: -10;
-        height: 100vh;
-        overflow-y: auto;
-    }
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
     <!-- Canvas for background sketch -->
-    <canvas id="backgroundCanvas"></canvas>
+    <div id="backgroundCanvas"></div>
 
     <!-- Root div for React app content -->
     <div class="content-container">

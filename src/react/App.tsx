@@ -1,17 +1,20 @@
-import { Box, Button, ButtonGroup, Container, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Container, Stack, Typography } from '@mui/material';
+import React, { useRef } from 'react';
+import { styled } from '@mui/system';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ImageContainer from './ImageContainer';
+import ProfileImage from './ProfileImage';
 import Spacer from './Spacer';
+import ScrollDownIcon from './ScrollDownIcon';
 
 export default function App() {
 
-    return (
-      <Container id="contact" sx={{ padding: 2 }}>
-          <ImageContainer background='contact_background.jpg'>
-              <Typography padding={2} variant="h2" color="text.primary">Sam moloney</Typography>
-          </ImageContainer>
+    return (  
+    <Stack>
+    <Landing />
+      <Container id="contact" >
           <Box padding={1} margin={1} sx={{
               minHeight: '128px',
               borderRadius: 4,
@@ -41,5 +44,40 @@ export default function App() {
               </Box>
           </Box>
       </Container>
+      <Box sx={{ height: '100vh', width: '100vw', }}>
+     </Box>
+      </Stack>
   );
+}
+
+function Landing() {
+
+    const nextSectionRef = useRef<HTMLDivElement>(null);
+    const scrollToSection = () => {
+        if (nextSectionRef.current) {
+          const offsetTop = nextSectionRef.current.offsetTop;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+          });
+        }
+        };
+    return <Box sx={{ height: '100vh', width: '100vw', backgroundColor: 'rgb(24, 28, 20)' }}>
+        {/* center */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30vh'}}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+                    <ProfileImage 
+                    src="./assets/headshot.png"
+                    alt="Profile Image" 
+                    />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Typography padding={2} variant="h2" color="#ECDFCC">Sam moloney</Typography>
+                <Typography padding={2} variant="h4" color="#ECDFCC">Software Engineer</Typography>
+                <ScrollDownIcon scrollToSection={scrollToSection} />
+                </div>
+            </div>
+        </div>
+    </Box>;
 }

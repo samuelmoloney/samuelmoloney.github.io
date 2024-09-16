@@ -16,7 +16,7 @@ const sketch = (p: p5) => {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    let canvas = p.createCanvas(width, height).parent('backgroundCanvas');
+    let canvas = p.createCanvas(width, height).parent("backgroundCanvas");
     flock = new Flock(p);
     // hook for window resizing
     window.addEventListener("resize", onWindowResize);
