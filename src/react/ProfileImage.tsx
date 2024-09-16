@@ -6,7 +6,7 @@ const CircularAvatar = styled(Avatar)({
   width: '300px',   
   height: '300px',  
   borderRadius: '50%',
-  border: '2px solid #3f51b5',  
+  border: '8px solid #ECDFCC',  
   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', 
 });
 
