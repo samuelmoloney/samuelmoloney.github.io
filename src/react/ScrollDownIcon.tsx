@@ -27,44 +27,42 @@ const ScrollDownIcon = ({
   scrollToSection: () => void;
   parentRef: React.RefObject<HTMLDivElement>;
 }) => {
-  const [top, setTop] = useState((window.innerHeight / 2) - 50);
+  const [top, setTop] = useState<number | null>(0);
+
   const reference = useRef<HTMLDivElement>(null);
-  
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (reference.current === null || parentRef.current === null) return;
 
+    // Function to calculate the initial position and handle scroll updates
+    const handleScrollAndPosition = () => {
+      if (reference.current === null || parentRef.current === null) return;
       const parentRect = parentRef.current.getBoundingClientRect();
       const rect = reference.current.getBoundingClientRect();
 
       // Calculate the amount of the parent element scrolled past
       const distanceScrolledPastParent = window.innerHeight - parentRect.top;
-      const scalerToTop =  (distanceScrolledPastParent / window.innerHeight) - 1;
-      // clamp the scaler to 0 - 1
+      const scalerToTop = distanceScrolledPastParent / window.innerHeight - 1;
       const scaler = Math.min(1, Math.max(0, scalerToTop));
 
-      const start = parentRect.height / 2 - rect.height / 2;
-      const end = parentRect.height - rect.height;
-      const newTop = start + (end - start) * scaler;
+      const start = 0; 
+      const end = parentRect.height - rect.height; 
 
+      const newTop = start + (end - start) * scaler; 
       setTop(newTop);
     };
 
-    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener('scroll', handleScrollAndPosition, true);
     return () => {
-      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('scroll', handleScrollAndPosition, true);
     };
   }, [parentRef]);
+
 
   return (
     <div
       ref={reference}
       style={{
-        position: 'absolute',
-        top: top !== undefined && top !== null && top != 0 ? `${top}px` : 0,
-        right: '50%',
-        transform: 'translateX(50%)',
+        transform: `translateY(${top}px)`,
         textAlign: 'center',
       }}
     >

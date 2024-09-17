@@ -3,15 +3,12 @@ import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/system';
 
 const CircularAvatar = styled(Avatar)({
-  width: '300px',   
-  height: '300px',  
-  borderRadius: '50%',
   border: '8px solid #ECDFCC',  
-  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', 
+  boxShadow: '0px 4px 18px rgba(0, 0, 0, 0.3)', 
 });
 
-const ProfileImage = ({ src, alt }) => {
-  return <CircularAvatar alt={alt} src={src} />;
+const ProfileImage = ({ src, alt, sx }) => {
+  return <CircularAvatar alt={alt} src={src} sx={sx} />;
 };
 
 export default ProfileImage;

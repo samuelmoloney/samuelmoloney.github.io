@@ -118,7 +118,7 @@ query<T extends iSceneObject>(
         
         // Draw the boundary of this quadtree
         p5.strokeWeight(2 * normalizedValue);
-        p5.stroke( 255, 255, 255, (255 * normalizedValue) * 0.1);
+        p5.stroke( 236, 223, 204 ,(255 * normalizedValue) * 0.1);
         p5.noFill();
         p5.rectMode(p5.CENTER);
         p5.rect(this.boundary.x, this.boundary.y, this.boundary.w * 2, this.boundary.h * 2);

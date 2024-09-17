@@ -21,12 +21,14 @@
             width: 100vw;
             height: 100vh;
             z-index: -1; /* Make sure the canvas stays in the background */
+            overflow: hidden;
         }
 
         /* React root */
         #root {
             position: relative;
             z-index: 1; /* Make React content appear above the canvas */
+            overflow: hidden;
         }
 
         /* Container for React app content that scrolls */

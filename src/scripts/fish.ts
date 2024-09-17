@@ -1,6 +1,7 @@
 import p5 from 'p5';
 import { NumberHelper } from './utils';
 import { iSceneObject } from './scene-object';
+import { Color, lerpColor } from '../utils/lerpColor';
 
 export class Fish  implements iSceneObject {
     segments: Segment[];
@@ -17,8 +18,13 @@ export class Fish  implements iSceneObject {
       this.segments = [];
       this.p5i = p5i;
       this.position = position;
-  
-   let randomColor = Math.floor(Math.random() * 155);
+      
+      let rand = Math.random();
+      //(24, 28, 20)
+      let startColor = new Color(24, 28, 20);
+      let endColor = new Color(236, 223, 204);
+      let randomColor = lerpColor(startColor, endColor, rand);
+      
       // Initialize segments, starting from head
       for (let i = 0; i < segmentCount; i++) {
         let size = segmentCount - i;
@@ -28,14 +34,14 @@ export class Fish  implements iSceneObject {
         let height = size * 0.5;
         let distance = size * 0.5;
         
-        let color = [randomColor, randomColor, randomColor, 100];
+       // let color = randomColor;
 
         if (i == 0) {
           distance = size * 0.5;  // Head is closer to the next segment
-          color[3] = 255;  // Head is opaque
+    
         }
         
-        let segment = new Segment(this.position.copy() , distance , width, height, color);
+        let segment = new Segment(this.position.copy() , distance , width, height, randomColor.toArray(i == 0 ?255 : 100 ));
         this.segments.push(segment);
       } 
       

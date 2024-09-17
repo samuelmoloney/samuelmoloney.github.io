@@ -42,6 +42,15 @@ export class Color
         const [, r, g, b] = match.map((x) => parseInt(x, 10));
         return new Color(r, g, b);
     }
+
+    toArray(alpha:number) : number[]
+    { 
+      if(alpha == undefined)
+      {
+        return [this.r, this.g, this.b];
+      }
+        return [this.r, this.g, this.b, alpha];
+    }
 }
 // Utility function to linearly interpolate between two values
 export function lerp (start: number, end: number, t: number): number {

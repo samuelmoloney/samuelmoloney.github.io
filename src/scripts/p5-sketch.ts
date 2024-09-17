@@ -28,7 +28,7 @@ const sketch = (p: p5) => {
     flock.update();
 
     // drawing methods
-    p.background(220);
+    p.background(236, 223, 204);
     p.fill(175);
     p.noStroke();
 
@@ -45,7 +45,7 @@ const sketch = (p: p5) => {
        
         const layerDepth = i * innerSize; // Increase depth for each layer
         p.push();
-         p.fill(100, 100, 100, 15 * i / layerCount);
+         p.fill(24, 28, 20, 20 * i / layerCount);
         // Calculate screen size and position for each layer
         let screenSize = baseScreenSize.copy().mult(1 - layerDepth);  // Shrink screen size
         let parallaxOffset = mouseUV.copy().sub(0.5).mult(layerDepth * parralaxStrength);  // Mouse effect for parallax
