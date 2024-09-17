@@ -4,8 +4,8 @@ import { Flock } from './flock';
 const sketch = (p: p5) => {
 
     function onWindowResize(){
-        const width = window.innerWidth * 0.99;
-        const height = window.innerHeight * 0.99;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
         p.resizeCanvas(width, height);
     }
 

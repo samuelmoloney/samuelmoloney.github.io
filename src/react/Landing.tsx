@@ -39,14 +39,13 @@ const Landing: React.FC<LandingProps> = ({ nextSectionRef }) => {
       ref={landingRef}
       sx={{
         height: '100vh',
-        width: '100vw',
         backgroundColor: backgroundColor,
         backgroundImage: `
           radial-gradient(circle, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 250%)
         `,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: '100% 100%',
-        overflow: 'hidden',
+        //backgroundSize: '100% 100%',
+       // overflow: 'hidden',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
