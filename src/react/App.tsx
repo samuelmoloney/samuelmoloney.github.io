@@ -79,7 +79,7 @@ function InfoContainer()
         }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' , alignItems: 'left'}}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-                    <ImageCarousel imageUrls={["https://via.placeholder.com/300", "https://via.placeholder.com/100", "https://via.placeholder.com/40"]} intervalTime={5000} minWidth = {400} />
+                    <ImageCarousel imageUrls={["https://picsum.photos/id/1/256/256", "https://picsum.photos/id/2/512/256", "https://picsum.photos/id/3/256/512"]} intervalTime={5000} height = {400} width ={400} />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <Typography padding={2} variant="h4" color='text.primary'>Text</Typography>

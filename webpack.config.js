@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
+    utils: './src/utils/index.ts',
     background:'./src/scripts/p5-sketch.ts',
     app: './src/react/index.tsx',  
   },
