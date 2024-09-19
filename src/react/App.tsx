@@ -33,7 +33,7 @@ export default function App() {
   >
     {/* under construction check back soon */}
     <Typography variant="h2" color="text.primary" textAlign={"center"}>Under Construction</Typography>
-    <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon!</Typography>
+    <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon</Typography>
 
     </Box>
     {/* <InfoContainer/>
@@ -51,6 +51,7 @@ export default function App() {
         }}
     >
     <Contact/>
+    <Spacer />
     </Box>
     </Stack>
   );
