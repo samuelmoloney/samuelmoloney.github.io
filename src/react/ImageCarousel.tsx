@@ -6,11 +6,12 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 interface ImageCarouselProps {
   imageUrls: string[];
   intervalTime: number; // Time in milliseconds to switch to the next image
+  fadeDuration: number; // Duration of the fade effect in milliseconds
   height: number; // Minimum height for the image container
   width: number; // Minimum width for the image container
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, height, width }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, fadeDuration, height, width }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -19,7 +20,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, 
     setTimeout(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
       setFade(true);
-    }, 300);
+    }, fadeDuration);
   };
 
   const goToPreviousImage = () => {
@@ -27,7 +28,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, 
     setTimeout(() => {
       setCurrentIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
       setFade(true);
-    }, 300);
+    }, fadeDuration);
   };
 
   useEffect(() => {
@@ -40,36 +41,62 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, 
       sx={{ 
         position: 'relative', 
         textAlign: 'center', 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // 50% opacity
-        borderRadius: '16px', // Curved borders
-        overflow: 'hidden', // Ensures image stays within the container
-        padding: 0, // Optional padding for spacing
-        height: height, // Minimum height
-        width: width, // Minimum width
+        backgroundColor: 'background.paper', // Material You surface color
+        borderRadius: '16px', // Material 3 standard rounded corners
+        overflow: 'hidden', 
+        height: { xs: 'auto', sm: height }, // Auto height for mobile, specified for larger screens
+        width: { xs: '100%', sm: width }, // Full width on mobile, specified for larger screens
         margin: '0 auto', // Center horizontally
+        boxShadow: 3, // Material 3 elevation
+        padding: '8px', // M3 recommended padding
       }}
     >
         <img
           src={imageUrls[currentIndex]}
           alt={`image-${currentIndex}`}
           style={{
-            height: '100%', // Full height of container
-            width: '100%', // Full width of container
-            backgroundPosition: "50% 50%",
-            objectFit: 'contain', // Scale image to cover the container
-            borderRadius: '8px', // Inner image border radius
-            opacity: fade ? 1 : 0, // Control opacity for fade effect
-            transition: 'opacity 0.3s ease-in-out', // Smooth fade transition
+            height: '100%',
+            width: '100%',
+            objectFit: 'contain', 
+            borderRadius: '8px', 
+            opacity: fade ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out',
           }}
         />
-   
-
+      
       {/* Navigation Buttons with Arrow Icons */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', position: 'sticky', bottom: '45%', width: '100%' }}>
-        <IconButton onClick={goToPreviousImage} sx={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#fff' }}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          position: 'absolute', // Positioning the buttons over the image
+          top: '50%', 
+          transform: 'translateY(-50%)', 
+          width: '100%' 
+        }}
+      >
+        <IconButton 
+          onClick={goToPreviousImage} 
+          sx={{ 
+            backgroundColor: 'background.default', 
+            color: 'text.primary', 
+            '&:hover': { backgroundColor: 'background.paper' }, // Slight hover effect
+            boxShadow: 2, // M3 elevation for buttons
+            borderRadius: '50%',
+          }}
+        >
           <ArrowBackIosNewIcon />
         </IconButton>
-        <IconButton onClick={goToNextImage} sx={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#fff' }}>
+        <IconButton 
+          onClick={goToNextImage} 
+          sx={{ 
+            backgroundColor: 'background.default', 
+            color: 'text.primary', 
+            '&:hover': { backgroundColor: 'background.paper' },
+            boxShadow: 2,
+            borderRadius: '50%',
+          }}
+        >
           <ArrowForwardIosIcon />
         </IconButton>
       </Box>

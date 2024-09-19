@@ -1,16 +1,11 @@
-import { Box, Button, ButtonGroup, Container, Stack, Typography } from '@mui/material';
-import React, { useRef } from 'react';
-import { styled } from '@mui/system';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
-import ImageContainer from './ImageContainer';
-import ProfileImage from './ProfileImage';
+import { Box, Button, ButtonGroup, Card, Container, Stack, Typography } from '@mui/material';
+import { useRef } from 'react';
 import Spacer from './Spacer';
-import ScrollDownIcon from './ScrollDownIcon';
 import Landing from './Landing';
-import { ViewColumn } from '@mui/icons-material';
 import ImageCarousel from './ImageCarousel';
+import { Contact } from './Contact';
+import Carousel from 'react-material-ui-carousel';
+import SecondExample from './SecondExample';
 
 export default function App() {
 
@@ -19,59 +14,70 @@ export default function App() {
     return (  
     <Stack>
     <Landing nextSectionRef={pageTopRef} />
-      <Container id="contact"  ref ={pageTopRef}>
-        <Contact/>
-      </Container>
-      <InfoContainer/>
-      <Box sx={{ height: '100vh', width: '100vw', }}>
-     </Box>
-      </Stack>
+    <Spacer />
+    <div 
+    id="topPage" 
+    ref ={pageTopRef}
+    >
+    </div>
+    <Box
+    padding={1}
+    sx={{
+      minHeight: '128px',
+      borderRadius: 4,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      backdropFilter: 'blur(5px)',
+      boxShadow: 8,
+      margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
+    }}
+  >
+    {/* under construction check back soon */}
+    <Typography variant="h2" color="text.primary" textAlign={"center"}>Under Construction</Typography>
+    <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon!</Typography>
+
+    </Box>
+    {/* <InfoContainer/>
+    <Spacer />
+    <InfoContainer/>
+    <InfoContainer/>
+    <InfoContainer/> */}
+    <Box 
+    sx={{ 
+        height: '100vh',
+        display: 'flex', 
+        flexDirection: 'column',
+        justifyContent: 'flex-end', 
+        alignItems: 'center', 
+        }}
+    >
+    <Contact/>
+    </Box>
+    </Stack>
   );
 }
-function Contact()
-{
-    return <Box padding={1} margin={1} sx={{
-        minHeight: '128px',
-        borderRadius: 4,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        backdropFilter: 'blur(5px)',
-        boxShadow: 8,
-    }}>
-        <Spacer />
-        <Typography variant="body1" color="text.primary">under construction</Typography>
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-        }}>
-            <Spacer />
-            <ButtonGroup aria-label="Contact Buttons">
-                <Button color="secondary" href="https://github.com/samuelmoloney" target="_blank">
-                    Github <GitHubIcon sx={{ paddingLeft: "8px" }} />
-                </Button>
-                <Button color="secondary" href="" target="google.com">
-                    Linkedin <LinkedInIcon sx={{ paddingLeft: "8px" }} />
-                </Button>
-                <Button color="secondary" href="mailto:contact@sammoloney.com">
-                    Email <EmailIcon sx={{ paddingLeft: "8px" }} />
-                </Button>
-            </ButtonGroup>
-        </Box>
-    </Box>;
 
-}
 
 function InfoContainer()
 {
-    return   <Box padding={1} margin={1} sx={{
-        minHeight: '128px',
-        borderRadius: 4,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        backdropFilter: 'blur(5px)',
-        boxShadow: 8,
-    }}>
+    return     <Box
+    padding={1}
+    sx={{
+      minHeight: '128px',
+      borderRadius: 4,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      backdropFilter: 'blur(5px)',
+      boxShadow: 8,
+      margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
+    }}
+  >
         <Spacer />
-        <Typography variant="body1" color="text.primary">under construction</Typography>
+        <Typography 
+        variant="h2" 
+        color="text.primary"
+        textAlign={'center'}
+        >
+            heading
+        </Typography>
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -79,7 +85,7 @@ function InfoContainer()
         }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' , alignItems: 'left'}}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-                    <ImageCarousel imageUrls={["https://picsum.photos/id/1/256/256", "https://picsum.photos/id/2/512/256", "https://picsum.photos/id/3/256/512"]} intervalTime={5000} height = {400} width ={400} />
+                <SecondExample />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <Typography padding={2} variant="h4" color='text.primary'>Text</Typography>
