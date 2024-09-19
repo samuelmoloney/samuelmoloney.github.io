@@ -16,10 +16,18 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
+        defaultVendors: false,
+        background: {
+          test: /[\\/]background[\\/]/,
+          name: 'background',
+          priority: 40,
+          enforce: true,
+        },
+        app: {
+          test: /[\\/]app[\\/]/,
+          name: 'app',
+          priority: 30,
+          enforce: true,
         },
       },
     },
