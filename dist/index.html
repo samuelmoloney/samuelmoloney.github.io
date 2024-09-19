@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Under Construction</title><style>/* Ensure body and html take the full height */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent unwanted scroll bars */
+        }
+
+        /* Ensure the canvas covers the entire screen and is always fixed in place */
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Make sure the canvas stays in the background */
+            overflow: hidden;
+        }
+
+        /* React root */
+        #root {
+            /* position: relative; */
+            z-index: 1; /* Make React content appear above the canvas */
+            /* overflow: hidden; */
+        }
+
+        /* Container for React app content that scrolls */
+        .content-container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }</style><script defer="defer" src="utils.31d6cfe0d16ae931b73c.bundle.js"></script><script defer="defer" src="vendors.120f108335a23dbf81b7.bundle.js"></script><script defer="defer" src="background.0c3abfe86205a132c8d2.bundle.js"></script><script defer="defer" src="app.373fcd13950853639de4.bundle.js"></script></head><body><div id="backgroundCanvas"></div><div class="content-container"><div id="root"></div></div><script src="/src/dist/vendors.bundle.js"></script><script type="module" src="/src/dist/app.bundle.js"></script><script type="module" src="/src/dist/background.bundle.js"></script></body></html>

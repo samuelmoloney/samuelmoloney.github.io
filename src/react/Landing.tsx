@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import { Color, lerpColor, lerpColorString } from '../utils/lerpColor';
 import ProfileImage from './ProfileImage'; // Assuming this is a custom component
 import ScrollDownIcon from './ScrollDownIcon'; // Assuming this is a custom component
-import theme from '../dist/vendors.bundle';
 
 interface LandingProps {
   nextSectionRef: React.RefObject<HTMLDivElement>;
@@ -66,7 +65,7 @@ const Landing: React.FC<LandingProps> = ({ nextSectionRef }) => {
         {/* Profile Image */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <ProfileImage
-            src="./assets/headshot.png"
+            src="../assets/headshot.png"
             alt="Profile Image"
             sx={{
               width: { xs: '350px', md: '300px' }, // Adjust size for mobile and larger screens

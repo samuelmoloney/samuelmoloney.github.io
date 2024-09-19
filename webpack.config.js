@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -7,8 +8,9 @@ module.exports = {
     app: './src/react/index.tsx',  
   },
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'src/dist'),
+    filename: '[name].[contenthash].bundle.js',
+    path: path.resolve(__dirname, 'dist/'),
+    clean: true, 
   },
   optimization: {
     splitChunks: {
@@ -41,4 +43,9 @@ module.exports = {
       
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html', // Use the custom HTML template
+    }),
+  ],
 };
