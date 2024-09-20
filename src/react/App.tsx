@@ -38,7 +38,11 @@ export default function App() {
     <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon</Typography>
     </Box>
     {/* Aura OS */}
-    <InfoContainer/>
+    <InfoContainer
+    // heading="Aura OS"
+    // subheading="A cutting-edge orchestration system designed to transform digital experiences."
+    // description=''
+    />
     {/* Eye Candy */}
     <InfoContainer/>
     {/* Pine Fire Studios */}
