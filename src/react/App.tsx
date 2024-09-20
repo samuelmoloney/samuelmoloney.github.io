@@ -2,11 +2,7 @@ import { Box, Button, ButtonGroup, Card, Container, Stack, Typography } from '@m
 import { useRef } from 'react';
 import Spacer from './Spacer';
 import Landing from './Landing';
-import ImageCarousel from './ImageCarousel';
 import { Contact } from './Contact';
-import Carousel from 'react-material-ui-carousel';
-import SecondExample from './SecondExample';
-import AnimatedInfoAvatar from './AnimatedInfoAvatar';
 import InfoContainer from './InfoContainer';
 
 export default function App() {
@@ -39,9 +35,11 @@ export default function App() {
     </Box>
     {/* Aura OS */}
     <InfoContainer
-    // heading="Aura OS"
-    // subheading="A cutting-edge orchestration system designed to transform digital experiences."
-    // description=''
+    imagePath='../assets/AuraOSFrontPage.png'
+    heading="Aura OS"
+    subheading="A cutting-edge orchestration system designed to transform digital experiences."
+    description=
+    'At Aura, I served as a Software Engineer from April 2021 to August 2024, focusing on developing cutting-edge interactive streaming solutions, real-time data visualization, and immersive experiences. \n \n I contributed to a range of projects, including VR applications, mobile-to-TV integrations, live sports data processing, and cloud-based data transformations.\n \n My work spanned Unity 3D and Flutter applications, integrating live data through GraphQL and AWS services, as well as enhancing user engagement through features like 3D live data maps, interactive betting systems, and cross-platform content control.'
     />
     {/* Eye Candy */}
     <InfoContainer/>

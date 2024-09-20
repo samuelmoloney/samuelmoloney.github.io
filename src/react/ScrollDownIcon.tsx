@@ -64,6 +64,7 @@ const ScrollDownIcon = ({
       style={{
         transform: `translateY(${top}px)`,
         textAlign: 'center',
+        transition: 'transform 0.1s ease-in-out',
       }}
     >
       <ScrollIcon onClick={scrollToSection} />

@@ -57,7 +57,18 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
           onReachMiddle={this.handleReachMiddle}
           onStartedScrolling={this.handleStartedScrolling}
         />
-
+        {/* Animated Line to box */}
+        {/* <Box
+          sx={{
+            height:{  xs: boxVisible ?  '100%' : '0%',lg: '3%' },
+            width: { xs: '3%', lg: boxVisible ?  '50%' : '0%' },
+            backgroundColor: 'text.primary',
+            transition: 'all 1s ease-out',
+            position: 'absolute',  // Make the line positioned absolutely
+            zIndex: -1,            // Lower zIndex to appear behind both the avatar and the box
+          }}
+        >
+        </Box> */}
         {/* Box with fade-in/fade-out animation */}
         <Box
           sx={{
@@ -70,9 +81,10 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
             width: { xs: '100%', lg: 'auto' },      // Full width for small screens
             marginTop: { xs: 2, lg: 0 },            // Adds margin on top for column layout
             opacity: boxVisible ? 1 : 0,            // Fade in (1) or fade out (0)
-            transition: 'opacity 0.3s ease-in-out', // Smooth transition for fading
+            transition: 'opacity 0.8s ease-in-out', // Smooth transition for fading
           }}
         >
+
           {/* Content inside the box */}
           <Box sx={{ padding: 2 }}>
             <Typography
@@ -100,6 +112,7 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
               variant="body1"
               color="text.primary"
               sx={{
+                whiteSpace: 'pre-line' ,
                 fontSize: { xs: '1rem', md: '1.5rem' },
                 padding: { xs: 1, md: 2 },
               }}
