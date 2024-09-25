@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { Box, IconButton } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -6,102 +6,157 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 interface ImageCarouselProps {
   imageUrls: string[];
   intervalTime: number; // Time in milliseconds to switch to the next image
-  fadeDuration: number; // Duration of the fade effect in milliseconds
-  height: number; // Minimum height for the image container
-  width: number; // Minimum width for the image container
+  animationDuration: number; // Duration of the slide effect in milliseconds
+
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageUrls, intervalTime, fadeDuration, height, width }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [fade, setFade] = useState(true);
+interface ImageCarouselState {
+  currentIndex: number;
+}
 
-  const goToNextImage = () => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
-      setFade(true);
-    }, fadeDuration);
+class ImageCarousel extends Component<ImageCarouselProps, ImageCarouselState> {
+  intervalId: NodeJS.Timeout | null = null;
+
+  constructor(props: ImageCarouselProps) {
+    super(props);
+    this.state = {
+      currentIndex: 0,
+    };
+  }
+
+  componentDidMount() {
+    this.startAutoSlide();
+  }
+
+  componentWillUnmount() {
+    this.clearAutoSlide();
+  }
+
+  startAutoSlide = () => {
+    this.intervalId = setInterval(this.goToNextImage, this.props.intervalTime);
   };
 
-  const goToPreviousImage = () => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
-      setFade(true);
-    }, fadeDuration);
+  clearAutoSlide = () => {
+    if (this.intervalId) clearInterval(this.intervalId);
   };
 
-  useEffect(() => {
-    const interval = setInterval(goToNextImage, intervalTime);
-    return () => clearInterval(interval);
-  }, [currentIndex, intervalTime]);
+  goToNextImage = () => {
+    this.setState({  currentIndex: (this.state.currentIndex + 1) % this.props.imageUrls.length });
+    this.clearAutoSlide();
+    this.startAutoSlide();
+  };
 
-  return (
-    <Box 
-      sx={{ 
-        position: 'relative', 
-        textAlign: 'center', 
-        backgroundColor: 'background.paper', // Material You surface color
-        borderRadius: '16px', // Material 3 standard rounded corners
-        overflow: 'hidden', 
-        height: { xs: 'auto', sm: height }, // Auto height for mobile, specified for larger screens
-        width: { xs: '100%', sm: width }, // Full width on mobile, specified for larger screens
-        margin: '0 auto', // Center horizontally
-        boxShadow: 3, // Material 3 elevation
-        padding: '8px', // M3 recommended padding
-      }}
-    >
-        <img
-          src={imageUrls[currentIndex]}
-          alt={`image-${currentIndex}`}
-          style={{
-            height: '100%',
-            width: '100%',
-            objectFit: 'contain', 
-            borderRadius: '8px', 
-            opacity: fade ? 1 : 0,
-            transition: 'opacity 0.3s ease-in-out',
-          }}
-        />
-      
-      {/* Navigation Buttons with Arrow Icons */}
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          position: 'absolute', // Positioning the buttons over the image
-          top: '50%', 
-          transform: 'translateY(-50%)', 
-          width: '100%' 
+  goToPreviousImage = () => {
+    this.setState({  currentIndex: (this.state.currentIndex - 1) < 0 ? this.props.imageUrls.length - 1 : this.state.currentIndex - 1 });
+    this.clearAutoSlide();
+    this.startAutoSlide();
+  };
+
+  goToIndex = (index: number) => {
+    this.setState({ currentIndex: index });
+    this.clearAutoSlide();
+    this.startAutoSlide();
+  }
+
+  render() {
+    const { imageUrls, animationDuration} = this.props;
+    const { currentIndex } = this.state;
+
+    return (
+      <Box
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: '16px',
+          boxShadow: 8,
         }}
       >
-        <IconButton 
-          onClick={goToPreviousImage} 
-          sx={{ 
-            backgroundColor: 'background.default', 
-            color: 'text.primary', 
-            '&:hover': { backgroundColor: 'background.paper' }, // Slight hover effect
-            boxShadow: 2, // M3 elevation for buttons
-            borderRadius: '50%',
+        <Box
+          sx={{
+            
+            display: 'flex',
+            transition: `transform ${animationDuration}ms ease-in-out` ,
+            transform: `translate(${-currentIndex * (100/ imageUrls.length)}%)`,
+            width: `${imageUrls.length * 100}%`,
+            height: '100%',
+            backgroundColor: 'primary.main',
+          
+          }}
+        >
+          {imageUrls.map((url, index) => (
+            <Box
+              key={index}
+              component="img"
+              src={url}
+              sx={{
+
+                width: `${100 / imageUrls.length}%`,
+              
+                objectFit: 'cover',
+              }}
+            />
+          ))}
+        </Box>
+
+        {/* Navigation Buttons */}
+        <IconButton
+          onClick={this.goToPreviousImage}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '0',
+            transform: 'translateY(-50%)',
+            backgroundColor: 'background.default',
+            zIndex: 1,
+            '&:hover': { backgroundColor: 'background.paper' },
           }}
         >
           <ArrowBackIosNewIcon />
         </IconButton>
-        <IconButton 
-          onClick={goToNextImage} 
-          sx={{ 
-            backgroundColor: 'background.default', 
-            color: 'text.primary', 
+
+        <IconButton
+          onClick={this.goToNextImage}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            right: '0',
+            transform: 'translateY(-50%)',
+            backgroundColor: 'background.default',
+            zIndex: 1,
             '&:hover': { backgroundColor: 'background.paper' },
-            boxShadow: 2,
-            borderRadius: '50%',
           }}
         >
           <ArrowForwardIosIcon />
         </IconButton>
+        {/* Navigation Dots */}
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '18px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '8px',
+          }}
+        >
+          {imageUrls.map((_, index) => (
+            <Box
+              key={index}
+              onClick={() => this.goToIndex(index)}
+              sx={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                backgroundColor: index === currentIndex ? 'action.active' : 'primary.main',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+              }}
+            />
+          ))}
       </Box>
-    </Box>
-  );
-};
+      </Box>
+    );
+  }
+}
 
 export default ImageCarousel;

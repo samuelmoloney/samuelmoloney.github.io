@@ -4,6 +4,7 @@ import Spacer from './Spacer';
 import Landing from './Landing';
 import { Contact } from './Contact';
 import InfoContainer from './InfoContainer';
+import ImageCarousel from './ImageCarousel';
 
 export default function App() {
 
@@ -29,6 +30,7 @@ export default function App() {
       margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
     }}
   >
+    {/* <ImageCarousel imageUrls={["https://picsum.photos/id/1/200/300","https://picsum.photos/id/2/200/300","https://picsum.photos/id/3/200/300"]} intervalTime={5000} animationDuration={1000} height={400} width={600}  /> */}
     {/* under construction check back soon */}
     <Typography variant="h2" color="text.primary" textAlign={"center"}>Under Construction</Typography>
     <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon</Typography>

@@ -2,6 +2,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import AnimatedInfoAvatar from './AnimatedInfoAvatar';
 import React from 'react';
+import ImageCarousel from './ImageCarousel';
 
 
 interface InfoContainerProps {
@@ -43,13 +44,14 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
 
 
     return (
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },  // Column for small, row for large screens
-          alignItems: 'center',      // Centers the items in the row
-          position: 'relative',      // To allow absolute positioning of the animated line
-        }}
+      <Box
+        className='info-container'
+        display={'flex'}
+        flexDirection={{ xs: 'column', sm: 'column', md: 'row' }}
+        alignItems={'center'}
+        justifyContent={'center'}
+        position={'relative'}
+        margin={ { xs: 1, sm: 2, md: 4, lg: 8 } } // Responsive margins
       >
         {/* Animated Avatar in the center of the screen */}
         <AnimatedInfoAvatar
@@ -57,43 +59,36 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
           onReachMiddle={this.handleReachMiddle}
           onStartedScrolling={this.handleStartedScrolling}
         />
-        {/* Animated Line to box */}
-        {/* <Box
-          sx={{
-            height:{  xs: boxVisible ?  '100%' : '0%',lg: '3%' },
-            width: { xs: '3%', lg: boxVisible ?  '50%' : '0%' },
-            backgroundColor: 'text.primary',
-            transition: 'all 1s ease-out',
-            position: 'absolute',  // Make the line positioned absolutely
-            zIndex: -1,            // Lower zIndex to appear behind both the avatar and the box
-          }}
-        >
-        </Box> */}
         {/* Box with fade-in/fade-out animation */}
         <Box
           sx={{
-            minHeight: '128px',
+            width: { xs: '100%', sm: '100%', md: '100vh', lg: '100vh' },
             borderRadius: 4,
             backgroundColor: 'rgba(0, 0, 0, 0.4)',
             backdropFilter: 'blur(5px)',
             boxShadow: 8,
             margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
-            width: { xs: '100%', lg: 'auto' },      // Full width for small screens
-            marginTop: { xs: 2, lg: 0 },            // Adds margin on top for column layout
+            marginTop: { xs: 2, sm: 2,md: 0, lg: 0 },            // Adds margin on top for column layout
             opacity: boxVisible ? 1 : 0,            // Fade in (1) or fade out (0)
             transition: 'opacity 0.8s ease-in-out', // Smooth transition for fading
           }}
         >
 
           {/* Content inside the box */}
-          <Box sx={{ padding: 2 }}>
+          <Box
+            display={'flex'}
+            flexDirection={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }}
+           >
+
+           {/* text */}     
+          <Box sx={{ padding: 2 , width: {xs: "100%", sm: "100%", md: "50%", lg: "50%"}}}>
             <Typography
               variant="h2"
               color="text.primary"
-              justifyContent="center"
+              justifyContent="left"
               sx={{
-                fontSize: { xs: '1.5rem', md: '3rem' }, // Adjust font size for different screens
-                padding: { xs: 1, md: 2 },
+
+                padding: { sm: 1, md: 2 },
               }}
             >
               {heading || 'Heading'}
@@ -102,8 +97,8 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
               variant="h4"
               color="text.primary"
               sx={{
-                fontSize: { xs: '1.25rem', md: '2rem' },
-                padding: { xs: 1, md: 2 },
+
+                padding: { sm: 1, md: 2 },
               }}
             >
               {subheading || 'Subheading'}
@@ -113,15 +108,25 @@ class InfoContainer extends React.Component<InfoContainerProps, InfoContainerSta
               color="text.primary"
               sx={{
                 whiteSpace: 'pre-line' ,
-                fontSize: { xs: '1rem', md: '1.5rem' },
-                padding: { xs: 1, md: 2 },
+                padding: { sm: 1, md: 2 },
               }}
             >
                 {description || 'Description'}
             </Typography>
           </Box>
+     
+          {/* Images */}
+        <Box sx={{ alignContent: "center", justifyContent: "center"}}>
+          <ImageCarousel 
+          imageUrls={["https://picsum.photos/id/8/400/600","https://picsum.photos/id/2/200/300","https://picsum.photos/id/3/200/300"]} 
+          intervalTime={5000} 
+          animationDuration={1000}  
+          />
+          </Box>
+            
         </Box>
-      </Container>
+        </Box>
+      </Box>
     );
   }
 }
