@@ -1,22 +1,21 @@
 import { Box } from '@mui/material';
 import React, { createRef } from 'react';
-import ProfileImage from './ProfileImage';
+import CircularImageViewer, { CircularImageViewerProps } from './CircularImageViewer';
 
-interface AnimatedInfoAvatarProps {
-  imagePath?: string;
+interface AnimatedInfoImageViewerProps extends CircularImageViewerProps {
   onReachMiddle: () => void;
   onStartedScrolling: () => void;
 }
 
-interface AnimatedInfoAvatarState {
+interface AnimatedInfoImageViewerState {
   scale: number;
   hasReachedMiddle: boolean;
 }
 
-class AnimatedInfoAvatar extends React.Component<AnimatedInfoAvatarProps, AnimatedInfoAvatarState> {
+class AnimatedInfoImageViewer extends React.Component<AnimatedInfoImageViewerProps, AnimatedInfoImageViewerState> {
   private animatedInfoAvatarRef: React.RefObject<HTMLDivElement>;
 
-  constructor(props: AnimatedInfoAvatarProps) {
+  constructor(props: AnimatedInfoImageViewerProps) {
     super(props);
     this.state = {
       scale: 0.5, // Initial scale
@@ -72,8 +71,8 @@ class AnimatedInfoAvatar extends React.Component<AnimatedInfoAvatarProps, Animat
   }
 
   render() {
-    const { imagePath } = this.props;
     const { scale } = this.state;
+    const { images } = this.props;
 
     return (
       <Box
@@ -85,18 +84,11 @@ class AnimatedInfoAvatar extends React.Component<AnimatedInfoAvatarProps, Animat
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <ProfileImage
-            src={imagePath}
-            alt="Profile Image"
-            sx={{
-              width: { xs: '350px', md: '300px' },
-              height: { xs: '350px', md: '300px' },
-            }}
-          />
+        <CircularImageViewer images={images} />
         </Box>
       </Box>
     );
   }
 }
 
-export default AnimatedInfoAvatar;
+export default AnimatedInfoImageViewer;

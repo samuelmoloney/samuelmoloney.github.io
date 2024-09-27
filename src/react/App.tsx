@@ -5,6 +5,7 @@ import Landing from './Landing';
 import { Contact } from './Contact';
 import InfoContainer from './InfoContainer';
 import ImageCarousel from './ImageCarousel';
+import CircularImageViewer from './CircularImageViewer';
 
 export default function App() {
 
@@ -19,29 +20,13 @@ export default function App() {
     ref ={pageTopRef}
     >
     </div>
-    <Box
-    padding={1}
-    sx={{
-      minHeight: '128px',
-      borderRadius: 4,
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-      backdropFilter: 'blur(5px)',
-      boxShadow: 8,
-      margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
-    }}
-  >
-    {/* <ImageCarousel imageUrls={["https://picsum.photos/id/1/200/300","https://picsum.photos/id/2/200/300","https://picsum.photos/id/3/200/300"]} intervalTime={5000} animationDuration={1000} height={400} width={600}  /> */}
-    {/* under construction check back soon */}
-    <Typography variant="h2" color="text.primary" textAlign={"center"}>Under Construction</Typography>
-    <Typography variant="h4" color="text.primary" textAlign={"center"}>Please check back soon</Typography>
-    </Box>
+  
     {/* Aura OS */}
     <InfoContainer
-    imagePath='../assets/AuraOSFrontPage.png'
-    heading="Aura OS"
-    subheading="A cutting-edge orchestration system designed to transform digital experiences."
+    heading="Under Construction"
+    subheading='Currently this site is under construction. Please check back later for more information.'
     description=
-    'At Aura, I served as a Software Engineer from April 2021 to August 2024, focusing on developing cutting-edge interactive streaming solutions, real-time data visualization, and immersive experiences. \n \n I contributed to a range of projects, including VR applications, mobile-to-TV integrations, live sports data processing, and cloud-based data transformations.\n \n My work spanned Unity 3D and Flutter applications, integrating live data through GraphQL and AWS services, as well as enhancing user engagement through features like 3D live data maps, interactive betting systems, and cross-platform content control.'
+    ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     />
     {/* Eye Candy */}
     <InfoContainer/>
