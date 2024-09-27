@@ -74,6 +74,7 @@ class AnimatedInfoImageViewer extends React.Component<AnimatedInfoImageViewerPro
     const { scale } = this.state;
     const { images } = this.props;
 
+
     return (
       <Box
         ref={this.animatedInfoAvatarRef}

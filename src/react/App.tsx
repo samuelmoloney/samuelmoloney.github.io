@@ -6,6 +6,7 @@ import { Contact } from './Contact';
 import InfoContainer from './InfoContainer';
 import ImageCarousel from './ImageCarousel';
 import CircularImageViewer from './CircularImageViewer';
+import { InfoContainerData } from './InfoContainerData';
 
 export default function App() {
 
@@ -21,18 +22,19 @@ export default function App() {
     >
     </div>
   
-    {/* Aura OS */}
-    <InfoContainer
-    heading="Under Construction"
-    subheading='Currently this site is under construction. Please check back later for more information.'
-    description=
-    ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    />
-    {/* Eye Candy */}
-    <InfoContainer/>
-    {/* Pine Fire Studios */}
-    <InfoContainer/>
-
+    {/* info Containers */}
+    <div>
+            {InfoContainerData.map((item, index) => (
+                <InfoContainer
+                    key={index}
+                    images={item.images}
+                    heading={item.heading}
+                    subheading={item.subheading}
+                    description={item.description}
+                    contentOrder={index % 2 === 0 ? 'left' : 'right'}
+                />
+            ))}
+        </div>
   
     <Box 
     sx={{ 

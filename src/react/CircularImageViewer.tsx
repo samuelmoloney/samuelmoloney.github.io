@@ -17,7 +17,6 @@ const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
   angleIncrement = 30, // Default angle increment of 30 degrees
   avatarSize = 350, // Default size for the center avatar
   buttonRadius = 60, // Default radius of the circular avatar buttons
-  maxDistance = 200, // Default max distance from the center
   onButtonClick, // Callback for button click
 }) => {
   const [currentImage, setCurrentImage] = useState(images[0]);
@@ -41,7 +40,8 @@ const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
       onButtonClick(index, image, image); // Passing the index, image, and path
     }
   };
-// Function to render buttons
+
+// TODO: the buttons are not rendering correctly so magic numbers are used to position them
 // Function to render buttons
 const renderButtons = (isSmallLayout: boolean) => {
   // If the image length is 1 or less, return null
@@ -50,12 +50,13 @@ const renderButtons = (isSmallLayout: boolean) => {
   return (
     <Box
       position="absolute"
-      width={ isSmallLayout ? 'auto' : avatarSize } // Full width for small layout
-      height={ isSmallLayout ? 'auto' : avatarSize } // Auto height for small layout
+      width={ avatarSize } 
+      height={ avatarSize }
       display="flex"
       alignItems="center"
       justifyContent="center" // Center horizontally
-      top={ isSmallLayout ? avatarSize : 'unset' } // Position below the main image for small layout
+      top={ isSmallLayout ? (avatarSize * 0.5)  : (avatarSize * 0.5) + (buttonRadius * 0.5) - 10} 
+      left={ isSmallLayout ? 'unset' : (avatarSize * 0.5)+  (buttonRadius * 0.5) - 10 } 
       
     >
       {images.map((image, index) => {
@@ -94,17 +95,18 @@ const renderButtons = (isSmallLayout: boolean) => {
         } else {
           // For large layout, position in a circle
           const angle = startAngle + index * angleIncrement; // Adjust angle with padding
-          const x = maxDistance * Math.cos((angle * Math.PI) / 180);
-          const y = maxDistance * Math.sin((angle * Math.PI) / 180);
+          const x = (avatarSize / 2)  * Math.cos((angle * Math.PI) / 180);
+          const y =(avatarSize / 2) * Math.sin((angle * Math.PI) / 180);
 
           return (
+
             <IconButton
               key={index}
               onClick={() => handleImageClick(image, index)} // Pass index and image on click
               style={{
                 position: 'absolute',
-                left: `calc(50% + ${x}px - ${buttonRadius / 2}px)`, // Center button for large layout
-                top: `calc(50% + ${y}px - ${buttonRadius / 2}px)`,
+                left: `${x}px`,
+                top: `${y}px`,
                 transition: 'transform 0.5s ease', // Smooth grow/shrink effect
                 transform: isCurrent ? 'scale(1.2)' : 'scale(1)', // Grow if current
               }}
