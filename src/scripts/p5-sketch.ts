@@ -37,9 +37,9 @@ const sketch = (p: p5) => {
     let baseScreenSize = p.createVector(p.width, p.height);
     let mouseUV = p.createVector(p.mouseX / p.width, p.mouseY / p.height);
     
-    let layerCount = 10;
-    let parralaxStrength = 200;
-    let innerSize = 0.033;
+    let layerCount = 5;
+    let parralaxStrength = 300;
+    let innerSize = 0.05;
     
     for (let i = 0; i < layerCount; i++) {  
        

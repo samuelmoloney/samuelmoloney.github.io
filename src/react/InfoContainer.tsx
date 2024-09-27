@@ -1,13 +1,12 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import AnimatedInfoImageViewer from './AnimatedInfoImageViewer';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface InfoContainerProps {
     images?: string[];
     heading?: string;
     subheading?: string;
     description?: string;
-    direction?: 'left' | 'right';
 }
 
 const InfoContainer: React.FC<InfoContainerProps> = ({
@@ -16,7 +15,8 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
     subheading,
     description,
 }) => {
-    const [boxVisible, setBoxVisible] = useState(false); // State for box visibility
+    const [boxVisible, setBoxVisible] = useState(false);
+    const [textVisible, setTextVisible] = useState(false); // Text visibility state
 
     // Check if the screen is small
     const isSmallScreen = useMediaQuery('(max-width:600px)');
@@ -29,7 +29,18 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
     // Handle when scrolling starts (fade out)
     const handleStartedScrolling = () => {
         setBoxVisible(false);
+        setTextVisible(false); // Hide text when box starts closing
     };
+
+    // Trigger text animation after the box finishes expanding
+    useEffect(() => {
+        if (boxVisible) {
+            const timer = setTimeout(() => {
+                setTextVisible(true); // Show text after box animation
+            }, 800); // Adjust time to match the box animation duration
+            return () => clearTimeout(timer); // Clean up timer on unmount
+        }
+    }, [boxVisible]);
 
     return (
         <Box
@@ -53,23 +64,31 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
                 onReachMiddle={handleReachMiddle}
                 onStartedScrolling={handleStartedScrolling}
             />
+
             <Box
                 sx={{
-                    width: isSmallScreen ? '100%' : (boxVisible ? '100%' : '0%'), 
+                    width: isSmallScreen ? '100%' : (boxVisible ? '100%' : '0%'),
                     height: isSmallScreen ? (boxVisible ? 'auto' : '0%') : '800px', // Set height based on screen size
                     borderRadius: 4,
                     backgroundColor: 'rgba(0, 0, 0, 0.4)',
                     backdropFilter: 'blur(5px)',
                     boxShadow: 8,
-
-
                     opacity: boxVisible ? 1 : 0, // Fade in (1) or fade out (0)
-                    transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out', // Smooth transition for width and opacity
+                    transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out',
                     overflow: 'hidden', // Prevent content overflow during transition
                 }}
             >
                 {/* Text */}
-                <Box sx={{ padding: 2 , whiteSpace: 'pre-wrap' }}>
+                <Box
+                    sx={{
+                        padding: 2,
+                        whiteSpace: 'pre-wrap',
+                        overflow: 'hidden',
+                        height: '100%', // Ensure it occupies full height
+                        opacity: textVisible ? 1 : 0, // Fade in text after box animation
+                        transition: 'opacity 0.5s ease-in-out', // Smooth transition for text opacity
+                    }}
+                >
                     <Typography
                         variant="h2"
                         color="text.primary"
@@ -77,6 +96,7 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
                         sx={{
                             padding: { sm: 1, md: 2 },
                             whiteSpace: 'pre-line',
+                            overflow: 'hidden',
                         }}
                     >
                         {heading || 'Heading'}
@@ -84,10 +104,10 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
                     <Typography
                         variant="h4"
                         color="text.primary"
-                        sx={
-                          {whiteSpace: 'pre-line',
+                        sx={{
+                            whiteSpace: 'pre-line',
                             padding: { sm: 1, md: 2 },
-                            
+                            overflow: 'hidden',
                         }}
                     >
                         {subheading || 'Subheading'}
@@ -98,6 +118,7 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
                         sx={{
                             whiteSpace: 'pre-line',
                             padding: { sm: 1, md: 2 },
+                            overflow: 'hidden',
                         }}
                     >
                         {description || 'Description'}

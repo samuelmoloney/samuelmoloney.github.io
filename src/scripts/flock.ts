@@ -30,6 +30,8 @@ export class Flock {
             let boid = new Boid(VectorHelper.random2DPos(this.p5i.width, this.p5i.height), this.p5i);
             this.boids.push(boid);
         }
+
+        // TODO: move this to a class it shouldnt be the flock's responsibility
         this.p5i.mouseDragged = () => {
             this.clickObstacle.position = this.p5i.createVector(this.p5i.mouseX, this.p5i.mouseY);
             this.clickObstacle.radius = 400;
@@ -40,6 +42,18 @@ export class Flock {
         }
         // on mouse release, remove the obstacle
         this.p5i.mouseReleased = () => {
+            this.clickObstacle.position = this.p5i.createVector(0, 0);
+            this.clickObstacle.radius = 0;
+        }
+        this.p5i.touchStarted = () => {
+            this.clickObstacle.position = this.p5i.createVector(this.p5i.mouseX, this.p5i.mouseY);
+            this.clickObstacle.radius = 400;
+        }
+        this.p5i.touchMoved = () => {
+            this.clickObstacle.position = this.p5i.createVector(this.p5i.mouseX, this.p5i.mouseY);
+            this.clickObstacle.radius = 400;
+        }
+        this.p5i.touchEnded = () => {
             this.clickObstacle.position = this.p5i.createVector(0, 0);
             this.clickObstacle.radius = 0;
         }
@@ -112,7 +126,7 @@ export class Flock {
 
     private calculateBoidCountFromScreenSize(): number {
         let minDimension = Math.min(this.p5i.width, this.p5i.height);
-        return Math.floor(minDimension / 10);
+        return Math.floor(minDimension / 20);
     }
 
     private avoidObstacle(boid: Boid, obstacles: Obstacle[]): p5.Vector {
