@@ -1,6 +1,6 @@
 import { InfoContainerProps } from "./InfoContainer";
 
-const underConstructionDescription = 'Currently this site is under construction. Please check back later for more information.';
+const underConstructionDescription = LoremIpsumGenerator(3);
 const underConstructionSubheading = 'Under Construction';
 
 function createImageArray(count:number, imageOffset: number) 
@@ -30,13 +30,27 @@ function randPow2( min : number, max : number) {
     return Math.pow(2, Math.floor(Math.log2( Math.floor(Math.random() * max) + min)));
 }
 
+function LoremIpsumGenerator( paragraghs : number = 1) : string
+{
+    let loremIpsumSentance = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nunc nec enim lacinia fermentum. Nulla facilisi.';
+    // repeat the sentance to create a paragraph in a random range
+    let loremIpsumParagraph = loremIpsumSentance.repeat(Math.floor(Math.random() * 4) + 1);
+    // add random insert line breaks at periods
+    loremIpsumParagraph = loremIpsumParagraph.replace(/\./g, '.\n');
+    // add breaks between paragraphs
+    loremIpsumParagraph+= '\n\n';
+    // repeat the paragraph to create the full text
+    
+    return loremIpsumParagraph.repeat(paragraghs);
+}
+
 export const InfoContainerData : InfoContainerProps[] = [
 
     // About me InfoContainer
     {
         images: createImageArray(7,0),
         heading: 'About Me',
-        subheading: 'underConstructionSubheading',
+        subheading: underConstructionSubheading,
         description: underConstructionDescription, 
     },
     // Aura InfoContainer
