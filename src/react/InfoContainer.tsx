@@ -36,7 +36,7 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
             className='info-container'
             display={'flex'}
             flexDirection={{ xs: 'column', sm: 'column', md: 'row' }}
-            alignItems={'start'}
+            alignItems={{ xs: 'center', sm: 'center', md: 'flex-start' }}
             justifyContent={'center'}
             position={'relative'}
             margin={{ xs: 1, sm: 2, md: 4, lg: 8 }} // Responsive margins
@@ -55,7 +55,7 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
             />
             <Box
                 sx={{
-                    width: boxVisible ? '100%' : '0%', // Change width from 0% to 100%
+                    width: isSmallScreen ? '100%' : (boxVisible ? '100%' : '0%'), 
                     height: isSmallScreen ? (boxVisible ? 'auto' : '0%') : '800px', // Set height based on screen size
                     borderRadius: 4,
                     backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -64,7 +64,7 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
 
 
                     opacity: boxVisible ? 1 : 0, // Fade in (1) or fade out (0)
-                    transition: 'width 0.8s ease-in-out, opacity 0.8s ease-in-out', // Smooth transition for width and opacity
+                    transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out', // Smooth transition for width and opacity
                     overflow: 'hidden', // Prevent content overflow during transition
                 }}
             >
