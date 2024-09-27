@@ -145,7 +145,7 @@ const renderButtons = (isSmallLayout: boolean) => {
     >
       {/* Center box displaying the current image with parallax animation */}
       <Box 
-        position="absolute" 
+
         width={avatarSize} 
         height={avatarSize}
         sx={{ 

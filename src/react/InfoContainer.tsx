@@ -61,8 +61,8 @@ const InfoContainer: React.FC<InfoContainerProps> = ({
                     backgroundColor: 'rgba(0, 0, 0, 0.4)',
                     backdropFilter: 'blur(5px)',
                     boxShadow: 8,
-                    margin: { xs: 1, sm: 2, md: 4, lg: 8 }, // Responsive margins
-                    marginTop: { xs: 2, sm: 2, md: 0, lg: 0 }, // Adds margin on top for column layout
+
+
                     opacity: boxVisible ? 1 : 0, // Fade in (1) or fade out (0)
                     transition: 'width 0.8s ease-in-out, opacity 0.8s ease-in-out', // Smooth transition for width and opacity
                     overflow: 'hidden', // Prevent content overflow during transition
