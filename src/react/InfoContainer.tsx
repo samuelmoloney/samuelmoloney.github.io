@@ -67,7 +67,7 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
     if (this.state.boxVisible && !prevState.boxVisible) {
       setTimeout(() => {
         this.setState({ textVisible: true });
-      }, 800);
+      }, 500);
     }
   }
 
@@ -75,21 +75,22 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
   renderInfoBox() {
     const { heading, subheading, description } = this.props;
     const { boxVisible, textVisible, isSmallScreen } = this.state;
-
+    console.log('this.state.currentIndex', this.state.currentIndex);
     return (
       <Box
         sx={{
           width: isSmallScreen ? '100%' : boxVisible ? '100%' : '0%',
-          minHeight: isSmallScreen ? (boxVisible ? 'auto' : '0%') : '400px',
+          height: isSmallScreen ? (boxVisible ? 'auto' : '0%') : 'auto',
           borderRadius: 4,
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
           backdropFilter: 'blur(5px)',
           boxShadow: 8,
           opacity: boxVisible ? 1 : 0,
-          transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out',
+          transition: 'width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out',
           overflow: 'hidden',
         }}
       >
+        
         <Box
           sx={{
             padding: 2,
@@ -97,17 +98,17 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
             overflow: 'hidden',
             height: '100%',
             opacity: textVisible ? 1 : 0,
-            transition: 'opacity 0.5s ease-in-out',
+            transition: 'opacity 0.2s ease-in-out',
           }}
         >
           <Typography variant="h1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
             {heading || 'Heading'}
           </Typography>
           <Typography variant="h2" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
-            {subheading || 'Subheading'}
+          {subheading ? subheading[this.state.currentIndex ] : 'Subheading'}
           </Typography>
           <Typography variant="body1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
-            {description || 'Description'}
+          {description ? description[this.state.currentIndex ] : 'Body'}
           </Typography>
         </Box>
       </Box>
@@ -136,6 +137,13 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
               images={Array.isArray(images) ? images : []}
               onReachMiddle={this.handleReachMiddle}
               onStartedScrolling={this.handleStartedScrolling}
+              onButtonClick={(index?: number) => {
+                if (index !== undefined) 
+                {
+                    console.log('AnimatedInfoImageViewer index', index);
+                    this.setCurrentIndex(index);
+                }
+              }}
             />
           </>
         ) : (
@@ -145,9 +153,12 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
               onReachMiddle={this.handleReachMiddle}
               onStartedScrolling={this.handleStartedScrolling}
               onButtonClick={(index?: number) => {
-                if (index !== undefined) this.setCurrentIndex(index);
-                // print the current index
-                console.log(this.state.currentIndex);
+                console.log('index', index);
+                if (index !== undefined) 
+                {
+                    console.log('AnimatedInfoImageViewer index', index);
+                    this.setCurrentIndex(index);
+                }
               }}
             />
             {this.renderInfoBox()}

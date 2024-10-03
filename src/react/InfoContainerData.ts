@@ -48,13 +48,6 @@ function LoremIpsumGenerator( paragraghs : number = 1) : string
 export const InfoContainerData : InfoContainerProps[] = [
 
     new AboutMeInfoData,
-    // // About me InfoContainer
-    // {
-    //     images: createImageArray(7,0),
-    //     heading: 'About Me',
-    //     subheading: underConstructionSubheading,
-    //     description: underConstructionDescription, 
-    // },
     // Aura InfoContainer
     {
         images: createImageArray(5,2),

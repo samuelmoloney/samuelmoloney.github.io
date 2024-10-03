@@ -37,8 +37,9 @@ const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
     setCurrentImage(image);
 
     // Trigger callback when an image is clicked
-    if (onButtonClick) {
-      onButtonClick(index, image, image); // Passing the index, image, and path
+    if (onButtonClick !== undefined) {
+      console.log("Calling onButtonClick with", index, image, image);
+      onButtonClick(index, image, image);
     }
   };
 

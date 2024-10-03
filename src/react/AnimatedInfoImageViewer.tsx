@@ -5,6 +5,7 @@ import CircularImageViewer, { CircularImageViewerProps } from './CircularImageVi
 interface AnimatedInfoImageViewerProps extends CircularImageViewerProps {
   onReachMiddle: () => void;
   onStartedScrolling: () => void;
+
 }
 
 interface AnimatedInfoImageViewerState {
@@ -72,7 +73,7 @@ class AnimatedInfoImageViewer extends React.Component<AnimatedInfoImageViewerPro
 
   render() {
     const { scale } = this.state;
-    
+
     return (
       <Box
         ref={this.animatedInfoAvatarRef}
