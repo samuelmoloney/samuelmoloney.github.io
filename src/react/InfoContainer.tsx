@@ -1,127 +1,161 @@
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import AnimatedInfoImageViewer from './AnimatedInfoImageViewer';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export interface InfoContainerProps {
-    images?: string[];
-    heading?: string;
-    subheading?: string;
-    description?: string;
-    contentOrder?: 'left' | 'right';  // Added contentOrder prop
+  currentIndex?: number;
+  images?: string[];
+  heading?: string;
+  subheading?: string[];
+  description?: string[];
+  contentOrder?: 'left' | 'right';
 }
 
-const InfoContainer: React.FC<InfoContainerProps> = ({
-    images,
-    heading,
-    subheading,
-    description,
-    contentOrder = 'right', // Default to 'left'
-}) => {
-    const [boxVisible, setBoxVisible] = useState(false);
-    const [textVisible, setTextVisible] = useState(false);
+interface InfoContainerState {
+  boxVisible: boolean;
+  textVisible: boolean;
+  currentIndex: number;
+  isSmallScreen: boolean;
+}
 
-    const isSmallScreen = useMediaQuery('(max-width:600px)');
-
-    const handleReachMiddle = () => {
-        setBoxVisible(true);
+export default class InfoContainer extends React.Component<InfoContainerProps, InfoContainerState> {
+  constructor(props: InfoContainerProps) {
+    super(props);
+    this.state = {
+      boxVisible: false,
+      textVisible: false,
+      currentIndex: props.currentIndex || 0,
+      isSmallScreen: window.innerWidth <= 900,
     };
 
-    const handleStartedScrolling = () => {
-        setBoxVisible(false);
-        setTextVisible(false);
-    };
+    this.handleReachMiddle = this.handleReachMiddle.bind(this);
+    this.handleStartedScrolling = this.handleStartedScrolling.bind(this);
+    this.setCurrentIndex = this.setCurrentIndex.bind(this);
+    this.handleResize = this.handleResize.bind(this);
+  }
 
-    useEffect(() => {
-        if (boxVisible) {
-            const timer = setTimeout(() => {
-                setTextVisible(true);
-            }, 800);
-            return () => clearTimeout(timer);
-        }
-    }, [boxVisible]);
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
 
-    // Function to render the Box with the text
-    const renderInfoBox = () => (
-        <Box
-            sx={{
-                width: isSmallScreen ? '100%' : (boxVisible ? '100%' : '0%'),
-                height: isSmallScreen ? (boxVisible ? 'auto' : '0%') : '800px',
-                borderRadius: 4,
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                backdropFilter: 'blur(5px)',
-                boxShadow: 8,
-                opacity: boxVisible ? 1 : 0,
-                transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out',
-                overflow: 'hidden',
-            }}
-        >
-            <Box
-                sx={{
-                    padding: 2,
-                    whiteSpace: 'pre-wrap',
-                    overflow: 'hidden',
-                    height: '100%',
-                    opacity: textVisible ? 1 : 0,
-                    transition: 'opacity 0.5s ease-in-out',
-                }}
-            >
-                <Typography
-                    variant="h2"
-                    color="text.primary"
-                    sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}
-                >
-                    {heading || 'Heading'}
-                </Typography>
-                <Typography
-                    variant="h4"
-                    color="text.primary"
-                    sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}
-                >
-                    {subheading || 'Subheading'}
-                </Typography>
-                <Typography
-                    variant="body1"
-                    color="text.primary"
-                    sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}
-                >
-                    {description || 'Description'}
-                </Typography>
-            </Box>
-        </Box>
-    );
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  // Handle screen size changes
+  handleResize() {
+    this.setState({ isSmallScreen: window.innerWidth <= 900 });
+  }
+
+  // Handle box visibility when reaching the middle
+  handleReachMiddle() {
+    this.setState({ boxVisible: true });
+  }
+
+  // Handle box and text visibility on scrolling
+  handleStartedScrolling() {
+    this.setState({ boxVisible: false, textVisible: false });
+  }
+
+  // Set current index for image viewer
+  setCurrentIndex(index: number) {
+    this.setState({ currentIndex: index });
+  }
+
+  // Update text visibility when box becomes visible
+  componentDidUpdate(prevProps: InfoContainerProps, prevState: InfoContainerState) {
+    if (this.state.boxVisible && !prevState.boxVisible) {
+      setTimeout(() => {
+        this.setState({ textVisible: true });
+      }, 800);
+    }
+  }
+
+  // Function to render the Box with text
+  renderInfoBox() {
+    const { heading, subheading, description } = this.props;
+    const { boxVisible, textVisible, isSmallScreen } = this.state;
 
     return (
+      <Box
+        sx={{
+          width: isSmallScreen ? '100%' : boxVisible ? '100%' : '0%',
+          minHeight: isSmallScreen ? (boxVisible ? 'auto' : '0%') : '400px',
+          borderRadius: 4,
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(5px)',
+          boxShadow: 8,
+          opacity: boxVisible ? 1 : 0,
+          transition: 'width 0.8s ease-in-out, height 0.8s ease-in-out, opacity 0.8s ease-in-out',
+          overflow: 'hidden',
+        }}
+      >
         <Box
-            className='info-container'
-            display={'flex'}
-            flexDirection={{ xs: 'column', sm: 'column', md: 'row' }}
-            alignItems={{ xs: 'center', sm: 'center', md: 'flex-start' }}
-            justifyContent={'center'}
-            position={'relative'}
-            margin={{ xs: 1, sm: 2, md: 4, lg: 8 }}
+          sx={{
+            padding: 2,
+            whiteSpace: 'pre-wrap',
+            overflow: 'hidden',
+            height: '100%',
+            opacity: textVisible ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+          }}
         >
-            {/* Conditionally render based on contentOrder */}
-            {contentOrder === 'left' && !isSmallScreen ? (
-                <>
-                    {renderInfoBox()}
-                    <AnimatedInfoImageViewer
-                        images={Array.isArray(images) ? images : []}
-                        onReachMiddle={handleReachMiddle}
-                        onStartedScrolling={handleStartedScrolling}
-                    />
-                </>
-            ) : (
-                <>
-                    <AnimatedInfoImageViewer
-                        images={Array.isArray(images) ? images : []}
-                        onReachMiddle={handleReachMiddle}
-                        onStartedScrolling={handleStartedScrolling}
-                    />
-                    {renderInfoBox()}
-                </>
-            )}
+          <Typography variant="h1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
+            {heading || 'Heading'}
+          </Typography>
+          <Typography variant="h2" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
+            {subheading || 'Subheading'}
+          </Typography>
+          <Typography variant="body1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
+            {description || 'Description'}
+          </Typography>
         </Box>
+      </Box>
     );
-};
+  }
 
-export default InfoContainer;
+  render() {
+    const { images, contentOrder } = this.props;
+    const { isSmallScreen } = this.state;
+
+    return (
+      <Box
+        className="info-container"
+        display={'flex'}
+        flexDirection={{ xs: 'column', sm: 'column', md: 'row' }}
+        alignItems={{ xs: 'center', sm: 'center', md: 'flex-start' }}
+        justifyContent={'center'}
+        position={'relative'}
+        margin={{ xs: 1, sm: 2, md: 4, lg: 8 }}
+      >
+        {/* Conditionally render based on contentOrder */}
+        {contentOrder === 'left' && !isSmallScreen ? (
+          <>
+            {this.renderInfoBox()}
+            <AnimatedInfoImageViewer
+              images={Array.isArray(images) ? images : []}
+              onReachMiddle={this.handleReachMiddle}
+              onStartedScrolling={this.handleStartedScrolling}
+            />
+          </>
+        ) : (
+          <>
+            <AnimatedInfoImageViewer
+              images={Array.isArray(images) ? images : []}
+              onReachMiddle={this.handleReachMiddle}
+              onStartedScrolling={this.handleStartedScrolling}
+              onButtonClick={(index?: number) => {
+                if (index !== undefined) this.setCurrentIndex(index);
+                // print the current index
+                console.log(this.state.currentIndex);
+              }}
+            />
+            {this.renderInfoBox()}
+          </>
+        )}
+      </Box>
+    );
+  }
+}
+
+

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Box, IconButton, useMediaQuery } from '@mui/material';
 
 export interface CircularImageViewerProps {
-  images: string[]; // Array of image source paths
+  images?: string[]; // Array of image source paths
   startAngle?: number; // Starting angle for the first image
   angleIncrement?: number; // Angle difference between consecutive images
   avatarSize?: number; // Diameter of the center avatar
   buttonRadius?: number; // Radius of the outer circular avatar buttons
   maxDistance?: number; // Maximum distance away from the center for the buttons
-  onButtonClick?: (index: number, image: string, path: string) => void; // Callback when a button is clicked
+  onButtonClick?: (index?: number, image?: string, path?: string) => void; // Callback when a button is clicked
 }
 
 const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
-  images,
+  images = [], // Default empty array of images
   startAngle = 180, // Default starting angle
   angleIncrement = 30, // Default angle increment of 30 degrees
   avatarSize = 350, // Default size for the center avatar
@@ -26,6 +26,7 @@ const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
 
   // Preload images to cache them
   useEffect(() => {
+    if(!images) return;
     images.forEach((src) => {
       const img = new Image();
       img.src = src;
@@ -44,6 +45,7 @@ const CircularImageViewer: React.FC<CircularImageViewerProps> = ({
 // TODO: the buttons are not rendering correctly so magic numbers are used to position them
 // Function to render buttons
 const renderButtons = (isSmallLayout: boolean) => {
+  if(!images) return null;
   // If the image length is 1 or less, return null
   if (images.length <= 1) return null;
 

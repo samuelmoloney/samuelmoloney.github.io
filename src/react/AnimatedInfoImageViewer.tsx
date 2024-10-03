@@ -72,9 +72,7 @@ class AnimatedInfoImageViewer extends React.Component<AnimatedInfoImageViewerPro
 
   render() {
     const { scale } = this.state;
-    const { images } = this.props;
-
-
+    
     return (
       <Box
         ref={this.animatedInfoAvatarRef}
@@ -85,7 +83,7 @@ class AnimatedInfoImageViewer extends React.Component<AnimatedInfoImageViewerPro
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <CircularImageViewer images={images} />
+        <CircularImageViewer{...this.props}/>
         </Box>
       </Box>
     );

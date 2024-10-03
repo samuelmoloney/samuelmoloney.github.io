@@ -1,7 +1,8 @@
+import AboutMeInfoData from "./info_data/AboutMeInfoData";
 import { InfoContainerProps } from "./InfoContainer";
 
-const underConstructionDescription = LoremIpsumGenerator(3);
-const underConstructionSubheading = 'Under Construction';
+const underConstructionDescription = [LoremIpsumGenerator(3)];
+const underConstructionSubheading = ['Under Construction'];
 
 function createImageArray(count:number, imageOffset: number) 
 {
@@ -46,13 +47,14 @@ function LoremIpsumGenerator( paragraghs : number = 1) : string
 
 export const InfoContainerData : InfoContainerProps[] = [
 
-    // About me InfoContainer
-    {
-        images: createImageArray(7,0),
-        heading: 'About Me',
-        subheading: underConstructionSubheading,
-        description: underConstructionDescription, 
-    },
+    new AboutMeInfoData,
+    // // About me InfoContainer
+    // {
+    //     images: createImageArray(7,0),
+    //     heading: 'About Me',
+    //     subheading: underConstructionSubheading,
+    //     description: underConstructionDescription, 
+    // },
     // Aura InfoContainer
     {
         images: createImageArray(5,2),
