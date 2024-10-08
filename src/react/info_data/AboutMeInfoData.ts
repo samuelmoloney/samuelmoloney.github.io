@@ -7,12 +7,12 @@ export class AboutMeInfoData implements InfoContainerProps
     heading: string;
     subheading: string[];
     description: string[];
-
-    data: InfoContainerProps[] = [];
+    headingLink: string;
 
     constructor()
     {  
         this.heading = 'A Bit About Me';
+        this.headingLink = '';
         this.images = [this.imageIntro, this.imageHowIGotHere];
         this.subheading = [this.subHeadingIntro, this.subHeadingHowIGotHere];
         this.description = [this.descriptionIntro, this.descriptionHowIGotHere];

@@ -29,6 +29,7 @@ export default function App() {
                     key={index}
                     images={item.images}
                     heading={item.heading}
+                    headingLink={item.headingLink}
                     subheading={item.subheading}
                     description={item.description}
                     contentOrder={index % 2 === 0 ? 'left' : 'right'}

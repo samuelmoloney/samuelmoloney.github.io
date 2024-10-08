@@ -4,14 +4,14 @@ export class AuraInfoData implements InfoContainerProps
 {
     images: string[];
     heading: string;
+    headingLink: string;
     subheading: string[];
     description: string[];
-
-    data: InfoContainerProps[] = [];
 
     constructor()
     {  
         this.heading = 'Aura';
+        this.headingLink = "https://www.thisisaura.com/";
         this.images = [this.imageAuraIntro]
         this.subheading = [this.subheadingAuraIntro];
         this.description = [this.descriptionAuraIntro];

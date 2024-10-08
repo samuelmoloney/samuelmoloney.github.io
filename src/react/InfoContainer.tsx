@@ -6,6 +6,7 @@ export interface InfoContainerProps {
   currentIndex?: number;
   images?: string[];
   heading?: string;
+  headingLink?: string;
   subheading?: string[];
   description?: string[];
   contentOrder?: 'left' | 'right';
@@ -73,9 +74,10 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
 
   // Function to render the Box with text
   renderInfoBox() {
-    const { heading, subheading, description } = this.props;
+    const { heading, headingLink, subheading, description } = this.props;
+    console.log('this.props', this.props);
+    console.log('this.headingLink', headingLink);
     const { boxVisible, textVisible, isSmallScreen } = this.state;
-    console.log('this.state.currentIndex', this.state.currentIndex);
     return (
       <Box
         sx={{
@@ -101,9 +103,20 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
             transition: 'opacity 0.2s ease-in-out',
           }}
         >
+          <Box 
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'left',
+          }}
+          >
           <Typography variant="h1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
             {heading || 'Heading'}
           </Typography>
+          <Typography variant="body1" component="a"  href={headingLink} target="_blank" rel="noopener noreferrer" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
+            { headingLink ? 'website' : ''}
+          </Typography>
+          </Box>
           <Typography variant="h2" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
           {subheading ? subheading[this.state.currentIndex ] : 'Subheading'}
           </Typography>
