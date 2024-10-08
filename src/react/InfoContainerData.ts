@@ -1,4 +1,5 @@
 import AboutMeInfoData from "./info_data/AboutMeInfoData";
+import { AuraInfoData } from "./info_data/AuraInfoData";
 import { InfoContainerProps } from "./InfoContainer";
 
 const underConstructionDescription = [LoremIpsumGenerator(3)];
@@ -49,12 +50,7 @@ export const InfoContainerData : InfoContainerProps[] = [
 
     new AboutMeInfoData,
     // Aura InfoContainer
-    {
-        images: createImageArray(5,2),
-        heading: 'Aura',
-        subheading: underConstructionSubheading,
-        description: underConstructionDescription,
-    },
+    new AuraInfoData,
 
     // Eye Candy InfoContainer
     {
