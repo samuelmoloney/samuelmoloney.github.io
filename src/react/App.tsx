@@ -42,7 +42,7 @@ export default function App() {
         height: '100vh',
         display: 'flex', 
         flexDirection: 'column',
-        justifyContent: 'flex-end', 
+        justifyContent: 'center', 
         alignItems: 'center', 
         }}
     >

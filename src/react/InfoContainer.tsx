@@ -1,5 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import AnimatedInfoImageViewer from './AnimatedInfoImageViewer';
+import LanguageIcon from '@mui/icons-material/Language';
 import React from 'react';
 
 export interface InfoContainerProps {
@@ -106,16 +107,40 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
           <Box 
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'left',
+            alignItems: 'center',
+            justifyContent: 'left',
           }}
           >
           <Typography variant="h1" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
             {heading || 'Heading'}
           </Typography>
-          <Typography variant="body1" component="a"  href={headingLink} target="_blank" rel="noopener noreferrer" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
-            { headingLink ? 'website' : ''}
-          </Typography>
+          {headingLink && (
+          <Box 
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 1,
+          }}
+          >
+          <IconButton 
+          href={headingLink} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          sx={{
+  
+            boxShadow: 10, // You can adjust this value for a lighter or darker shadow
+            '&:hover': {
+              boxShadow: 4, // Add a hover effect for a more pronounced shadow
+            },}}
+          >
+            <LanguageIcon 
+            sx={{scale: { xs: 1, md: 1, lg: 1.5 },
+            color: 'lightblue'
+            }}
+            ></LanguageIcon>
+          </IconButton>
+          </Box> )}
           </Box>
           <Typography variant="h2" color="text.primary" sx={{ padding: { sm: 1, md: 2 }, whiteSpace: 'pre-line' }}>
           {subheading ? subheading[this.state.currentIndex ] : 'Subheading'}
