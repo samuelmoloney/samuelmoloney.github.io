@@ -1,5 +1,7 @@
 import AboutMeInfoData from "./info_data/AboutMeInfoData";
 import { AuraInfoData } from "./info_data/AuraInfoData";
+import { EyeCandyInfoData } from "./info_data/EyeCandyInfoData";
+import { PineFireStudiosInfoData } from "./info_data/PineFireStudiosInfoData";
 import { InfoContainerProps } from "./InfoContainer";
 
 // const underConstructionDescription = [LoremIpsumGenerator(3)];
@@ -51,27 +53,11 @@ export const InfoContainerData : InfoContainerProps[] = [
     new AboutMeInfoData,
     // Aura InfoContainer
     new AuraInfoData,
-
     // // Eye Candy InfoContainer
-    // {
-    //     images: createImageArray(4,10),
-    //     heading: 'Eye Candy',
-    //     subheading: underConstructionSubheading,
-    //     description: underConstructionDescription,
-    // },
+    new EyeCandyInfoData,
     // // Pine Fire Studios InfoContainer
-    // {
-    //     images: createImageArray(3,18),
-    //     heading: 'Pine Fire Studios',
-    //     subheading: underConstructionSubheading,
-    //     description: underConstructionDescription,
-    // },
+    new PineFireStudiosInfoData,
     // // Personal Projects InfoContainer
-    // {
-    //     images: createImageArray(2,22),
-    //     heading: 'Personal Projects',
-    //     subheading: underConstructionSubheading,
-    //     description: underConstructionDescription,
-    // },
-
+    // new PersonalProjectsInfoData,
+   
 ];

@@ -183,15 +183,15 @@ const renderButtons = (isSmallLayout: boolean) => {
         @keyframes parallax {
           0% {
             transform: scale(1);
-            transform-origin: 100% 0%;
+            transform-origin: 0% 0%;
           }
           50% {
-            transform: scale(1.2);
+            transform: scale(1.1);
             transform-origin: 0% 100%;
           }
           100% {
             transform: scale(1);
-            transform-origin: 100% 0%;
+            transform-origin: 0% 0%;
           }
         }
       `}</style>
