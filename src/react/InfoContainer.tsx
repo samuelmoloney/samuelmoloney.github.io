@@ -76,8 +76,7 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
   // Function to render the Box with text
   renderInfoBox() {
     const { heading, headingLink, subheading, description } = this.props;
-    console.log('this.props', this.props);
-    console.log('this.headingLink', headingLink);
+
     const { boxVisible, textVisible, isSmallScreen } = this.state;
     return (
       <Box
@@ -91,6 +90,7 @@ export default class InfoContainer extends React.Component<InfoContainerProps, I
           opacity: boxVisible ? 1 : 0,
           transition: 'width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out',
           overflow: 'hidden',
+          maxWidth: isSmallScreen ? '100%' : '50%',
         }}
       >
         

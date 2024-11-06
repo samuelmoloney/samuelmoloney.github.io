@@ -24,6 +24,7 @@ export default function App() {
   
     {/* info Containers */}
     <div>
+     
             {InfoContainerData.map((item, index) => (
                 <InfoContainer
                     key={index}
@@ -35,6 +36,7 @@ export default function App() {
                     contentOrder={index % 2 === 0 ? 'left' : 'right'}
                 />
             ))}
+    
         </div>
   
     <Box 
